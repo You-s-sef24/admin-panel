@@ -1,0 +1,96 @@
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  Settings,
+  LogOut,
+  X,
+} from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+
+const navItems = [
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/products", label: "Products", icon: Package },
+  { to: "/orders", label: "Orders", icon: ShoppingCart },
+  { to: "/users", label: "Users", icon: Users },
+  { to: "/settings", label: "Settings", icon: Settings },
+];
+
+export default function AppSidebar({ isOpen, onClose }) {
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
+
+  return (
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      <aside
+        className={`fixed md:static top-0 left-0 z-50 flex flex-col w-64 h-screen bg-white border-r border-gray-200 transition-transform duration-200
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+          <h1 className="text-xl font-bold text-blue-600">Shopify Admin</h1>
+          <button onClick={onClose} className="md:hidden text-gray-500">
+            <X size={20} />
+          </button>
+        </div>
+
+        <nav className="flex-1 px-3 py-4 space-y-1">
+          {navItems.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`
+              }
+            >
+              <Icon size={18} />
+              {label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="border-t border-gray-200 p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+              {user?.name?.charAt(0)?.toUpperCase() || "A"}
+            </div>
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-sm font-medium truncate">
+                {user?.name || "Admin"}
+              </span>
+              <span className="text-xs text-gray-500 truncate">
+                {user?.email}
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
