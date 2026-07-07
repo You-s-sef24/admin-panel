@@ -18,16 +18,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUpdateProduct } from "@/hooks/useUpdateProduct";
+import z from "zod";
+import { toast } from "sonner";
 
 export default function EditProductDialog({ show, product }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(product || {});
   const { mutate: updateProduct } = useUpdateProduct();
 
+  useEffect(() => {
+    if (product) {
+      setFormData(product);
+    }
+  }, [product, open]);
+
+  const formSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    price: z.number().min(0, "Price must be a positive number"),
+    dimensions: z.string().optional(),
+    frameType: z.enum(["Wood", "Metal", "None"]).optional(),
+    image: z.union([z.string(), z.instanceof(File)]).optional(),
+  });
   function handleSubmit(e) {
     e.preventDefault();
+    if (!product) {
+      toast.error("Product data is missing");
+      return;
+    }
+    const validationResult = formSchema.safeParse(formData);
+    if (!validationResult.success) {
+      const firstError = validationResult.error.issues[0]?.message;
+      toast.error(firstError || "Please check your input");
+      return;
+    }
+
     updateProduct(
       {
         id: product.id,
@@ -81,7 +107,7 @@ export default function EditProductDialog({ show, product }) {
               placeholder="145"
               value={formData.price || ""}
               onChange={(e) =>
-                setFormData({ ...formData, price: e.target.value })
+                setFormData({ ...formData, price: Number(e.target.value) })
               }
             />
           </div>

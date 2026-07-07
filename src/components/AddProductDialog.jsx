@@ -20,14 +20,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import z from "zod";
+import { toast } from "sonner";
 
 export default function AddProductDialog({ show }) {
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    dimensions: "",
+    frameType: "",
+    image: null,
+  });
   const { mutate: createProduct } = useAddProduct();
+
+  const formSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    price: z.coerce.number().min(0, "Price must be a positive number"),
+    dimensions: z.string().optional(),
+    frameType: z.enum(["Wood", "Metal", "None"]).optional(),
+    image: z.instanceof(File, { message: "Please upload an image" }),
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
+    const parsedData = formSchema.safeParse(formData);
+    if (!parsedData.success) {
+      const firstError = parsedData.error.issues[0]?.message;
+      toast.error(firstError || "Please check your input");
+      return;
+    }
+
     createProduct(
       {
         name: formData.name,
@@ -39,7 +62,13 @@ export default function AddProductDialog({ show }) {
       {
         onSuccess: () => {
           setOpen(false);
-          setFormData({});
+          setFormData({
+            name: "",
+            price: "",
+            dimensions: "",
+            frameType: "",
+            image: null,
+          });
         },
       },
     );
@@ -80,7 +109,7 @@ export default function AddProductDialog({ show }) {
               placeholder="145"
               value={formData.price || ""}
               onChange={(e) =>
-                setFormData({ ...formData, price: e.target.value })
+                setFormData({ ...formData, price: Number(e.target.value) })
               }
             />
           </div>

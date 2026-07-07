@@ -29,6 +29,15 @@ export async function createProduct(product) {
 }
 
 export async function updateProduct({ id, ...product }) {
+    if (product.image instanceof File) {
+        const formData = new FormData();
+        formData.append("file", product.image);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+        const uploadRes = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+        product.image = uploadRes.data.secure_url;
+    }
+
     const res = await axios.put(`${BASE_URL}/products/${id}`, product);
     return res.data;
 }

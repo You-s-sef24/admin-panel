@@ -60,7 +60,7 @@ export function ProductsTable({ search = "", frameType = "" }) {
                 </TableCell>
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>${product.price}</TableCell>
-                <TableCell>{product.dimensions}</TableCell>
+                <TableCell>{product.dimensions} in</TableCell>
                 <TableCell>{product.frameType}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
