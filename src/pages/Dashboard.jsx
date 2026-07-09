@@ -29,7 +29,7 @@ export default function Dashboard() {
     orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 dark:bg-gray-950 min-h-screen">
       <Header title="Dashboard" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
         <AnalyticsCard
@@ -58,7 +58,7 @@ export default function Dashboard() {
         <SalesTrendChart />
         <FrameTypeChart />
       </div>
-      <div className=" p-4">
+      <div className="p-4">
         <TopProductsChart />
       </div>
       <div className="p-4">

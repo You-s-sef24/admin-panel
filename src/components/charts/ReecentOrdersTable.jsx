@@ -10,8 +10,9 @@ import { Badge } from "../ui/badge";
 import { useGetOrders } from "@/hooks/orders/useGetOrders";
 
 const statusStyles = {
-  Delivered: "bg-green-100 text-green-700",
-  Pending: "bg-amber-100 text-amber-700",
+  Delivered:
+    "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400",
+  Pending: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400",
 };
 
 function formatDate(timestamp) {
@@ -31,8 +32,10 @@ export default function RecentOrdersTable() {
     .slice(0, 4);
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6">
-      <h3 className="font-semibold text-lg mb-4">Recent orders</h3>
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6">
+      <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
+        Recent orders
+      </h3>
       <Table>
         <TableHeader>
           <TableRow>
@@ -46,11 +49,11 @@ export default function RecentOrdersTable() {
         <TableBody>
           {recentOrders.map((order) => (
             <TableRow key={order.id}>
-              <TableCell className="font-medium text-indigo-600">
+              <TableCell className="font-medium text-indigo-600 dark:text-indigo-400">
                 ORD-{order.id}
               </TableCell>
               <TableCell>{order.customerName}</TableCell>
-              <TableCell className="text-gray-500">
+              <TableCell className="text-gray-500 dark:text-gray-400">
                 {formatDate(order.createdAt)}
               </TableCell>
               <TableCell>

@@ -41,9 +41,7 @@ export function DeleteProductDialog({ product }) {
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className={
-              "bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer disabled:opacity-50"
-            }
+            className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-800 dark:hover:bg-blue-600 transition-all cursor-pointer disabled:opacity-50"
             onClick={() => deleteProduct(product.id)}
             disabled={isPending}
           >

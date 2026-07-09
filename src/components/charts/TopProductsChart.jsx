@@ -37,8 +37,10 @@ export default function TopProductsChart() {
   const chartData = buildTopProductsData(orders);
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6">
-      <h3 className="font-semibold text-lg mb-4">Top products by sales</h3>
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6">
+      <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
+        Top products by sales
+      </h3>
       <ChartContainer
         config={chartConfig}
         className="w-full h-[280px] aspect-auto"

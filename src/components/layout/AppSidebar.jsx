@@ -38,12 +38,17 @@ export default function AppSidebar({ isOpen, onClose }) {
       )}
 
       <aside
-        className={`fixed md:static top-0 left-0 z-50 flex flex-col w-64 h-screen bg-white border-r border-gray-200 transition-transform duration-200
+        className={`fixed md:static top-0 left-0 z-50 flex flex-col w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-transform duration-200
           ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-blue-600">Shopify Admin</h1>
-          <button onClick={onClose} className="md:hidden text-gray-500">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-800">
+          <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">
+            Shopify Admin
+          </h1>
+          <button
+            onClick={onClose}
+            className="md:hidden text-gray-500 dark:text-gray-400"
+          >
             <X size={20} />
           </button>
         </div>
@@ -57,8 +62,8 @@ export default function AppSidebar({ isOpen, onClose }) {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-blue-50 text-blue-600"
-                    : "text-gray-600 hover:bg-gray-100"
+                    ? "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`
               }
             >
@@ -68,23 +73,23 @@ export default function AppSidebar({ isOpen, onClose }) {
           ))}
         </nav>
 
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+            <div className="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold">
               {user?.name?.charAt(0)?.toUpperCase() || "A"}
             </div>
             <div className="flex flex-col overflow-hidden">
-              <span className="text-sm font-medium truncate">
+              <span className="text-sm font-medium truncate text-gray-900 dark:text-gray-100">
                 {user?.name || "Admin"}
               </span>
-              <span className="text-xs text-gray-500 truncate">
+              <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
                 {user?.email}
               </span>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+            className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors cursor-pointer"
           >
             <LogOut size={18} />
             Logout

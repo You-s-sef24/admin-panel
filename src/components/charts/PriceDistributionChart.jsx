@@ -45,8 +45,10 @@ export default function PriceDistributionChart() {
   const chartData = buildChartData(products);
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <h3 className="font-semibold mb-4">Price Distribution</h3>
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4">
+      <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        Price Distribution
+      </h3>
       <ChartContainer config={chartConfig} className="min-h-[250px] w-full">
         <BarChart data={chartData}>
           <CartesianGrid vertical={false} />

@@ -58,8 +58,10 @@ export default function FrameTypeChart() {
   }, {});
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <h3 className="font-semibold mb-4">Frame Type Breakdown</h3>
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4">
+      <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        Frame Type Breakdown
+      </h3>
       <ChartContainer
         config={chartConfig}
         className="mx-auto aspect-square max-h-[280px]"
