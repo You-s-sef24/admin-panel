@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { useUpdateProduct } from "@/hooks/useUpdateProduct";
+import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
 import z from "zod";
 import { toast } from "sonner";
 
@@ -159,7 +159,7 @@ export default function EditProductDialog({ show, product }) {
 
           <DialogFooter>
             <DialogClose render={<Button variant="outline">Cancel</Button>} />
-            <Button type="submit">Save changes</Button>
+            <Button className={"bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer"} type="submit">Save changes</Button>
           </DialogFooter>
         </form>
       </DialogContent>

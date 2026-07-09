@@ -4,6 +4,8 @@ import { getUsers } from "@/api/users";
 import AnalyticsCard from "@/components/AnalyticsCard";
 import FrameTypeChart from "@/components/charts/FrameTypeChart";
 import SalesTrendChart from "@/components/charts/PriceDistributionChart";
+import RecentOrdersTable from "@/components/charts/ReecentOrdersTable";
+import TopProductsChart from "@/components/charts/TopProductsChart";
 import Header from "@/components/Header";
 import { useQuery } from "@tanstack/react-query";
 import { Package, ShoppingCartIcon, TrendingUp, UsersIcon } from "lucide-react";
@@ -55,6 +57,12 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
         <SalesTrendChart />
         <FrameTypeChart />
+      </div>
+      <div className=" p-4">
+        <TopProductsChart />
+      </div>
+      <div className="p-4">
+        <RecentOrdersTable />
       </div>
     </div>
   );

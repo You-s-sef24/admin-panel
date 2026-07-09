@@ -32,7 +32,7 @@ export default function Products() {
               <option value="None">None</option>
             </select>
           </div>
-          <AddProductDialog show={<Button>+ Add Product</Button>} />
+          <AddProductDialog show={<Button className="bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer">+ Add Product</Button>} />
         </div>
 
         <ProductsTable

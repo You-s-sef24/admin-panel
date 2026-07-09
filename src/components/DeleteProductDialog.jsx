@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useDeleteProduct } from "@/hooks/useDeleteProduct";
+import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
 
 export function DeleteProductDialog({ product }) {
   const { mutate: deleteProduct } = useDeleteProduct();
@@ -40,7 +40,7 @@ export function DeleteProductDialog({ product }) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => deleteProduct(product.id)}>
+          <AlertDialogAction className={"bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer"} onClick={() => deleteProduct(product.id)}>
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

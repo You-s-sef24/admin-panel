@@ -1,4 +1,4 @@
-import { useAddProduct } from "@/hooks/useAddProduct";
+import { useAddProduct } from "@/hooks/products/useAddProduct";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -161,7 +161,7 @@ export default function AddProductDialog({ show }) {
 
           <DialogFooter>
             <DialogClose render={<Button variant="outline">Cancel</Button>} />
-            <Button type="submit">Save changes</Button>
+            <Button className={"bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer"} type="submit">Save changes</Button>
           </DialogFooter>
         </form>
       </DialogContent>

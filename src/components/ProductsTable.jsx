@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DeleteProductDialog } from "@/components/DeleteProductDialog";
-import { useGetProducts } from "@/hooks/useGetProducts";
+import { useGetProducts } from "@/hooks/products/useGetProducts";
 import EditProductDialog from "./EditProductDialog";
 
 export function ProductsTable({ search = "", frameType = "" }) {
