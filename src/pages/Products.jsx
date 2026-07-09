@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Header from "@/components/Header";
+import Header from "@/components/layout/Header";
 import { ProductsTable } from "@/components/ProductsTable";
 import { Button } from "@/components/ui/button";
 import AddProductDialog from "@/components/AddProductDialog";
@@ -32,13 +32,16 @@ export default function Products() {
               <option value="None">None</option>
             </select>
           </div>
-          <AddProductDialog show={<Button className="bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer">+ Add Product</Button>} />
+          <AddProductDialog
+            show={
+              <Button className="bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer">
+                + Add Product
+              </Button>
+            }
+          />
         </div>
 
-        <ProductsTable
-          search={search}
-          frameType={frameType}
-        />
+        <ProductsTable search={search} frameType={frameType} />
       </div>
     </div>
   );

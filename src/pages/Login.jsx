@@ -21,6 +21,10 @@ async function loginRequest({ email, password }) {
     throw new Error("Invalid email or password");
   }
 
+  if (matchedUser.role !== "Admin") {
+    throw new Error("Access denied. Admins only.");
+  }
+
   return matchedUser;
 }
 
