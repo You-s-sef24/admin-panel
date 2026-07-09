@@ -1,7 +1,7 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dz0ylot2a/image/upload";
-const CLOUDINARY_UPLOAD_PRESET = "product_uploads";
+const CLOUDINARY_UPLOAD_URL = import.meta.env.VITE_API_CLOUDINARY_URL;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_API_CLOUDINARY_PRESET;
 
 export async function getProducts() {
     const res = await axios.get(`${BASE_URL}/products`);
