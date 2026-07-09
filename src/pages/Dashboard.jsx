@@ -6,7 +6,7 @@ import FrameTypeChart from "@/components/charts/FrameTypeChart";
 import SalesTrendChart from "@/components/charts/PriceDistributionChart";
 import RecentOrdersTable from "@/components/charts/ReecentOrdersTable";
 import TopProductsChart from "@/components/charts/TopProductsChart";
-import Header from "@/components/Header";
+import Header from "@/components/layout/Header";
 import { useQuery } from "@tanstack/react-query";
 import { Package, ShoppingCartIcon, TrendingUp, UsersIcon } from "lucide-react";
 
