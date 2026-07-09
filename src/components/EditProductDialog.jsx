@@ -26,7 +26,7 @@ import { toast } from "sonner";
 export default function EditProductDialog({ show, product }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(product || {});
-  const { mutate: updateProduct } = useUpdateProduct();
+  const { mutate: updateProduct, isPending } = useUpdateProduct();
 
   useEffect(() => {
     if (product) {
@@ -158,8 +158,19 @@ export default function EditProductDialog({ show, product }) {
           </div>
 
           <DialogFooter>
-            <DialogClose render={<Button variant="outline">Cancel</Button>} />
-            <Button className={"bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer"} type="submit">Save changes</Button>
+            <DialogClose
+              render={<Button variant="outline">Cancel</Button>}
+              disabled={isPending}
+            />
+            <Button
+              className={
+                "bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer disabled:opacity-50"
+              }
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending ? "Saving..." : "Save changes"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

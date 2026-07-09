@@ -32,7 +32,7 @@ export default function AddProductDialog({ show }) {
     frameType: "",
     image: null,
   });
-  const { mutate: createProduct } = useAddProduct();
+  const { mutate: createProduct, isPending } = useAddProduct();
 
   const formSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -160,8 +160,19 @@ export default function AddProductDialog({ show }) {
           </div>
 
           <DialogFooter>
-            <DialogClose render={<Button variant="outline">Cancel</Button>} />
-            <Button className={"bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer"} type="submit">Save changes</Button>
+            <DialogClose
+              disabled={isPending}
+              render={<Button variant="outline">Cancel</Button>}
+            />
+            <Button
+              className={
+                "bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer disabled:opacity-50"
+              }
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending ? "Saving..." : "Save changes"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -14,7 +14,7 @@ import {
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
 
 export function DeleteProductDialog({ product }) {
-  const { mutate: deleteProduct } = useDeleteProduct();
+  const { mutate: deleteProduct, isPending } = useDeleteProduct();
 
   return (
     <AlertDialog>
@@ -39,9 +39,15 @@ export function DeleteProductDialog({ product }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className={"bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer"} onClick={() => deleteProduct(product.id)}>
-            Delete
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className={
+              "bg-blue-600 text-white hover:bg-blue-800 transition-all cursor-pointer disabled:opacity-50"
+            }
+            onClick={() => deleteProduct(product.id)}
+            disabled={isPending}
+          >
+            {isPending ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
