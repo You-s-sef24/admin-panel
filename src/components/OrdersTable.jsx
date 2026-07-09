@@ -69,7 +69,9 @@ export function OrdersTable({ search = "", status = "" }) {
           ) : (
             filteredOrders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell>ORD-{order.id}</TableCell>
+                <TableCell className="font-medium text-indigo-600 dark:text-indigo-400">
+                  ORD-{order.id}
+                </TableCell>
                 <TableCell className="font-medium">
                   {order.customerName}
                 </TableCell>

@@ -8,6 +8,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "../ui/badge";
 import { useGetOrders } from "@/hooks/orders/useGetOrders";
+import { Button } from "../ui/button";
+import { EyeIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const statusStyles = {
   Delivered:
@@ -21,6 +24,7 @@ function formatDate(timestamp) {
 
 export default function RecentOrdersTable() {
   const { data: orders, isLoading, isError } = useGetOrders();
+  const navigate = useNavigate();
 
   if (isLoading)
     return <p className="text-sm text-gray-500">Loading orders...</p>;
@@ -44,6 +48,7 @@ export default function RecentOrdersTable() {
             <TableHead>Date</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Total</TableHead>
+            <TableHead className="text-right">View</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,6 +72,17 @@ export default function RecentOrdersTable() {
               </TableCell>
               <TableCell className="text-right font-medium">
                 ${order.total}
+              </TableCell>
+              <TableCell className="text-right">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-8"
+                  onClick={() => navigate(`/orders/${order.id}`)}
+                >
+                  <EyeIcon className="size-4" />
+                  <span className="sr-only">View</span>
+                </Button>
               </TableCell>
             </TableRow>
           ))}
