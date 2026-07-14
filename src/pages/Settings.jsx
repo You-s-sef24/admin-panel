@@ -6,6 +6,11 @@ import Header from "@/components/layout/Header";
 import { useThemeStore } from "@/store/themeStore";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "@/store/langStore";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "@/store/authStore";
+import { useUpdateProfile } from "@/hooks/users/useUpdateProfile";
+import z from "zod";
+import { toast } from "sonner";
 
 export default function Settings() {
   const theme = useThemeStore((s) => s.theme);
@@ -13,6 +18,78 @@ export default function Settings() {
   const { t } = useTranslation();
   const language = useLanguageStore((s) => s.language);
   const setLanguage = useLanguageStore((s) => s.setLanguage);
+
+  const user = useAuthStore((s) => s.user);
+  const { mutate: updateProfile, isPending: isSavingProfile } =
+    useUpdateProfile();
+  const { mutate: updatePassword, isPending: isSavingPassword } =
+    useUpdateProfile();
+
+  const [profileData, setProfileData] = useState({ name: "", email: "" });
+  const [passwordData, setPasswordData] = useState({ current: "", new: "" });
+
+  useEffect(() => {
+    if (user) {
+      setProfileData({ name: user.name, email: user.email });
+    }
+  }, [user]);
+
+  const profileDataSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email address"),
+  });
+
+  const passwordDataSchema = z.object({
+    current: z.string().min(1, "Current password is required"),
+    new: z.string().min(8, "Password must be at least 8 characters"),
+  });
+
+  function handleSaveProfile(e) {
+    e.preventDefault();
+
+    const validationResult = profileDataSchema.safeParse(profileData);
+    if (!validationResult.success) {
+      const firstError = validationResult.error.issues[0]?.message;
+      toast.error(firstError || t("login.checkInput"));
+      return;
+    }
+
+    updateProfile({
+      id: user.id,
+      ...user,
+      name: profileData.name,
+      email: profileData.email,
+    });
+  }
+
+  function handleChangePassword(e) {
+    e.preventDefault();
+
+    const validationResult = passwordDataSchema.safeParse(passwordData);
+    if (!validationResult.success) {
+      const firstError = validationResult.error.issues[0]?.message;
+      toast.error(firstError || t("login.checkInput"));
+      return;
+    }
+
+    if (passwordData.current !== user.password) {
+      toast.error("Current password is incorrect");
+      return;
+    }
+
+    updatePassword(
+      {
+        id: user.id,
+        ...user,
+        password: passwordData.new,
+      },
+      {
+        onSuccess: () => {
+          setPasswordData({ current: "", new: "" });
+        },
+      },
+    );
+  }
 
   return (
     <div>
@@ -91,24 +168,34 @@ export default function Settings() {
               {t("settings.accountInfo")}
             </h3>
           </div>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSaveProfile}>
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">{t("settings.name")}</Label>
-              <Input id="name" defaultValue="Alex Morgan" />
+              <Input
+                id="name"
+                value={profileData.name}
+                onChange={(e) =>
+                  setProfileData({ ...profileData, name: e.target.value })
+                }
+              />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="email">{t("settings.email")}</Label>
               <Input
                 id="email"
                 type="email"
-                defaultValue="alex.morgan@nexus.io"
+                value={profileData.email}
+                onChange={(e) =>
+                  setProfileData({ ...profileData, email: e.target.value })
+                }
               />
             </div>
             <Button
               type="submit"
+              disabled={isSavingProfile}
               className="w-fit bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
-              {t("settings.saveChanges")}
+              {isSavingProfile ? "Saving..." : t("settings.saveChanges")}
             </Button>
           </form>
         </div>
@@ -120,20 +207,37 @@ export default function Settings() {
               {t("settings.changePassword")}
             </h3>
           </div>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleChangePassword}>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="current-password">{t("settings.currentPassword")}</Label>
-              <Input id="current-password" type="password" />
+              <Label htmlFor="current-password">
+                {t("settings.currentPassword")}
+              </Label>
+              <Input
+                id="current-password"
+                type="password"
+                value={passwordData.current}
+                onChange={(e) =>
+                  setPasswordData({ ...passwordData, current: e.target.value })
+                }
+              />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="new-password">{t("settings.newPassword")}</Label>
-              <Input id="new-password" type="password" />
+              <Input
+                id="new-password"
+                type="password"
+                value={passwordData.new}
+                onChange={(e) =>
+                  setPasswordData({ ...passwordData, new: e.target.value })
+                }
+              />
             </div>
             <Button
               type="submit"
+              disabled={isSavingPassword}
               className="w-fit bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
-              {t("settings.changePassword")}
+              {isSavingPassword ? "Updating..." : t("settings.changePassword")}
             </Button>
           </form>
         </div>

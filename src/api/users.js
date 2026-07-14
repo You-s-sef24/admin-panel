@@ -5,3 +5,8 @@ export async function getUsers() {
     const res = await axios.get(`${BASE_URL}/users`);
     return res.data;
 }
+
+export async function updateUser({ id, ...user }) {
+    const res = await axios.put(`${BASE_URL}/users/${id}`, user);
+    return res.data;
+}
