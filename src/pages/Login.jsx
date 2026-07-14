@@ -6,6 +6,8 @@ import { z } from "zod";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/store/authStore";
+import { Eye, EyeOff } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -35,6 +37,7 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [viewPass, setViewPass] = useState(false);
   const navigate = useNavigate();
   const setUser = useAuthStore((s) => s.setUser);
 
@@ -81,7 +84,7 @@ export default function Login() {
             <label className="font-medium text-gray-900 dark:text-gray-100">
               {t("login.email")}
             </label>
-            <input
+            <Input
               type="email"
               placeholder="admin@nexus.io"
               className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md p-2"
@@ -95,15 +98,25 @@ export default function Login() {
             <label className="font-medium text-gray-900 dark:text-gray-100">
               {t("login.password")}
             </label>
-            <input
-              type="password"
-              placeholder="********"
-              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md p-2"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
+            <div className="relative">
+              <Input
+                type={viewPass ? "text" : "password"}
+                placeholder="********"
+                className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md p-2 pr-10 w-full"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setViewPass((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer"
+                tabIndex={-1}
+              >
+                {viewPass ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
           <button
             type="submit"

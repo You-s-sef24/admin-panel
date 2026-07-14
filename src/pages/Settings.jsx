@@ -1,4 +1,4 @@
-import { Globe, Sun, Moon, User, Lock } from "lucide-react";
+import { Globe, Sun, Moon, User, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,6 +27,8 @@ export default function Settings() {
 
   const [profileData, setProfileData] = useState({ name: "", email: "" });
   const [passwordData, setPasswordData] = useState({ current: "", new: "" });
+  const [viewCurrentPass, setViewCurrentPass] = useState(false);
+  const [viewNewPass, setViewNewPass] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -212,25 +214,48 @@ export default function Settings() {
               <Label htmlFor="current-password">
                 {t("settings.currentPassword")}
               </Label>
-              <Input
-                id="current-password"
-                type="password"
-                value={passwordData.current}
-                onChange={(e) =>
-                  setPasswordData({ ...passwordData, current: e.target.value })
-                }
-              />
+              <div className="relative" dir="ltr">
+                <Input
+                  id="current-password"
+                  type={viewCurrentPass ? "text" : "password"}
+                  value={passwordData.current}
+                  onChange={(e) =>
+                    setPasswordData({
+                      ...passwordData,
+                      current: e.target.value,
+                    })
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => setViewCurrentPass((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer"
+                  tabIndex={-1}
+                >
+                  {viewCurrentPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="new-password">{t("settings.newPassword")}</Label>
-              <Input
-                id="new-password"
-                type="password"
-                value={passwordData.new}
-                onChange={(e) =>
-                  setPasswordData({ ...passwordData, new: e.target.value })
-                }
-              />
+              <div className="relative" dir="ltr">
+                <Input
+                  id="new-password"
+                  type={viewNewPass ? "text" : "password"}
+                  value={passwordData.new}
+                  onChange={(e) =>
+                    setPasswordData({ ...passwordData, new: e.target.value })
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => setViewNewPass((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer"
+                  tabIndex={-1}
+                >
+                  {viewNewPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
             <Button
               type="submit"
