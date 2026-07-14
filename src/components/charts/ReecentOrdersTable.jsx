@@ -76,7 +76,7 @@ export default function RecentOrdersTable() {
                     "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                   }
                 >
-                  {order.status}
+                  {t(`orders.${order.status}`)}
                 </Badge>
               </TableCell>
               <TableCell className="text-end font-medium">
