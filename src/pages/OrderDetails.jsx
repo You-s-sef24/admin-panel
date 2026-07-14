@@ -13,8 +13,10 @@ import { useGetOrder } from "@/hooks/orders/useGetOrder";
 import { useUpdateOrder } from "@/hooks/orders/useUpdateOrder";
 import Header from "@/components/layout/Header";
 import { formatDate } from "@/lib/formatDate";
+import { useLanguageStore } from "@/store/langStore";
 
 export default function OrderDetails() {
+  const language = useLanguageStore((s) => s.language);
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -81,7 +83,7 @@ export default function OrderDetails() {
               {t("orderDetails.status")}
             </p>
             <Select
-              value={t(`orderDetails.${order.status}`)}
+              value={order.status}
               onValueChange={handleStatusChange}
               disabled={isPending}
             >
@@ -120,7 +122,9 @@ export default function OrderDetails() {
               >
                 <div>
                   <p className="font-medium text-gray-900 dark:text-gray-100">
-                    {item.productName}
+                    {language === "en"
+                      ? item.productName.en
+                      : item.productName.ar || item.productName.en}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {t("orderDetails.qty")}: {item.quantity}

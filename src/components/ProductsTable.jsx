@@ -12,8 +12,10 @@ import {
 import { DeleteProductDialog } from "@/components/DeleteProductDialog";
 import { useGetProducts } from "@/hooks/products/useGetProducts";
 import EditProductDialog from "./EditProductDialog";
+import { useLanguageStore } from "@/store/langStore";
 
 export function ProductsTable({ search = "" }) {
+  const language = useLanguageStore((s) => s.language);
   const { t } = useTranslation();
   const { data: products, isLoading, isError } = useGetProducts();
 
@@ -23,10 +25,11 @@ export function ProductsTable({ search = "" }) {
     return <p className="text-sm text-red-500">Failed to load products</p>;
 
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    return matchesSearch;
+    const query = search.toLowerCase();
+    return (
+      (product.name.en || "").toLowerCase().includes(query) ||
+      (product.name.ar || "").toLowerCase().includes(query)
+    );
   });
 
   return (
@@ -53,42 +56,51 @@ export function ProductsTable({ search = "" }) {
               </TableCell>
             </TableRow>
           ) : (
-            filteredProducts.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell className="text-start">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="object-cover rounded-md size-16"
-                  />
-                </TableCell>
-                <TableCell className="font-medium text-start">
-                  {product.name}
-                </TableCell>
-                <TableCell className="text-start">${product.price}</TableCell>
-                <TableCell className="text-start">
-                  {product.dimensions} in
-                </TableCell>
-                <TableCell className="text-end">
-                  <div className="flex justify-end gap-2">
-                    <EditProductDialog
-                      product={product}
-                      show={
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="size-8"
-                        >
-                          <PencilIcon className="size-4" />
-                          <span className="sr-only">{t("products.edit")}</span>
-                        </Button>
-                      }
+            filteredProducts.map((product) => {
+              const displayName =
+                language === "en"
+                  ? product.name.en
+                  : product.name.ar || product.name.en;
+
+              return (
+                <TableRow key={product.id}>
+                  <TableCell className="text-start">
+                    <img
+                      src={product.image}
+                      alt={displayName}
+                      className="object-cover rounded-md size-16"
                     />
-                    <DeleteProductDialog product={product} />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
+                  </TableCell>
+                  <TableCell className="font-medium text-start">
+                    {displayName}
+                  </TableCell>
+                  <TableCell className="text-start">${product.price}</TableCell>
+                  <TableCell className="text-start">
+                    {product.dimensions} in
+                  </TableCell>
+                  <TableCell className="text-end">
+                    <div className="flex justify-end gap-2">
+                      <EditProductDialog
+                        product={product}
+                        show={
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="size-8"
+                          >
+                            <PencilIcon className="size-4" />
+                            <span className="sr-only">
+                              {t("products.edit")}
+                            </span>
+                          </Button>
+                        }
+                      />
+                      <DeleteProductDialog product={product} />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })
           )}
         </TableBody>
       </Table>

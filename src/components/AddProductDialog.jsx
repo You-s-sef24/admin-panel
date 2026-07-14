@@ -16,12 +16,20 @@ import { useState } from "react";
 import z from "zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { Textarea } from "./ui/textarea";
 
 export default function AddProductDialog({ show }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    name: {
+      en: "",
+      ar: "",
+    },
+    desc: {
+      ar: "",
+      en: "",
+    },
     price: "",
     dimensions: "",
     image: null,
@@ -29,7 +37,12 @@ export default function AddProductDialog({ show }) {
   const { mutate: createProduct, isPending } = useAddProduct();
 
   const formSchema = z.object({
-    name: z.string().min(1, "Name is required"),
+    name: z.object({
+      en: z.string().min(1, "English name is required"),
+    }),
+    desc: z.object({
+      en: z.string().min(1, "English description is required"),
+    }),
     price: z.coerce.number().min(0, "Price must be a positive number"),
     dimensions: z.string().optional(),
     image: z.instanceof(File, { message: "Please upload an image" }),
@@ -47,6 +60,7 @@ export default function AddProductDialog({ show }) {
     createProduct(
       {
         name: formData.name,
+        desc: formData.desc,
         price: formData.price,
         dimensions: formData.dimensions,
         image: formData.image,
@@ -55,7 +69,14 @@ export default function AddProductDialog({ show }) {
         onSuccess: () => {
           setOpen(false);
           setFormData({
-            name: "",
+            name: {
+              en: "",
+              ar: "",
+            },
+            desc: {
+              en: "",
+              ar: "",
+            },
             price: "",
             dimensions: "",
             image: null,
@@ -68,7 +89,7 @@ export default function AddProductDialog({ show }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={show} />
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{t("products.addProductTitle")}</DialogTitle>
           <DialogDescription>
@@ -77,32 +98,101 @@ export default function AddProductDialog({ show }) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="name">{t("products.name")}</Label>
-            <Input
-              id="name"
-              name="name"
-              placeholder={t("products.namePlaceholder")}
-              value={formData.name || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="name-en">{t("products.name")}</Label>
+              <Input
+                id="name-en"
+                name="name-en"
+                placeholder={t("products.englishNamePlaceholder")}
+                value={formData.name.en || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    name: { ...formData.name, en: e.target.value },
+                  })
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="name-ar">{t("products.arabicName")}</Label>
+              <Input
+                id="name-ar"
+                name="name-ar"
+                placeholder={t("products.arabicNamePlaceholder")}
+                value={formData.name.ar || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    name: { ...formData.name, ar: e.target.value },
+                  })
+                }
+              />
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="price">{t("products.priceLabel")}</Label>
-            <Input
-              id="price"
-              name="price"
-              type="number"
-              step="0.01"
-              placeholder="145"
-              value={formData.price || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, price: Number(e.target.value) })
-              }
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="desc-en">{t("products.desc")}</Label>
+              <Textarea
+                id="desc-en"
+                name="desc-en"
+                className="resize-none h-25"
+                placeholder={t("products.englishDescPlaceholder")}
+                value={formData.desc.en || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    desc: { ...formData.desc, en: e.target.value },
+                  })
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="desc-ar">{t("products.descArabic")}</Label>
+              <Textarea
+                id="desc-ar"
+                name="desc-ar"
+                className="resize-none h-25"
+                placeholder={t("products.arabicDescPlaceholder")}
+                value={formData.desc.ar || ""}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    desc: { ...formData.desc, ar: e.target.value },
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="price">{t("products.priceLabel")}</Label>
+              <Input
+                id="price"
+                name="price"
+                type="number"
+                step="0.01"
+                placeholder="145"
+                value={formData.price || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: Number(e.target.value) })
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="dimensions">{t("products.dimensionsLabel")}</Label>
+              <Input
+                id="dimensions"
+                name="dimensions"
+                placeholder={t("products.dimensionsPlaceholder")}
+                value={formData.dimensions || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, dimensions: e.target.value })
+                }
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -114,19 +204,6 @@ export default function AddProductDialog({ show }) {
               onChange={(e) => {
                 setFormData({ ...formData, image: e.target.files[0] });
               }}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="dimensions">{t("products.dimensionsLabel")}</Label>
-            <Input
-              id="dimensions"
-              name="dimensions"
-              placeholder={t("products.dimensionsPlaceholder")}
-              value={formData.dimensions || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, dimensions: e.target.value })
-              }
             />
           </div>
 

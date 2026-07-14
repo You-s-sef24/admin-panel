@@ -2,6 +2,7 @@ import { getOrders } from "@/api/orders";
 import { getProducts } from "@/api/products";
 import { getUsers } from "@/api/users";
 import AnalyticsCard from "@/components/AnalyticsCard";
+import OrdersByStatusChart from "@/components/charts/OrdersByStatus";
 import SalesTrendChart from "@/components/charts/PriceDistributionChart";
 import RecentOrdersTable from "@/components/charts/ReecentOrdersTable";
 import TopProductsChart from "@/components/charts/TopProductsChart";
@@ -57,6 +58,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+        <OrdersByStatusChart />
         <SalesTrendChart />
       </div>
       <div className="p-4">

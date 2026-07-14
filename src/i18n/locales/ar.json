@@ -85,6 +85,7 @@
     "addProductTitle": "إضافة منتج",
     "addProductDescription": "أدخل التفاصيل لإضافة عمل فني جديد إلى الكتالوج.",
     "name": "الاسم",
+    "arabicName": "الاسم بالعربية",
     "priceLabel": "السعر ($)",
     "dimensionsLabel": "الأبعاد",
     "frameTypeLabel": "نوع الإطار",
@@ -92,7 +93,8 @@
     "cancel": "إلغاء",
     "saveChanges": "حفظ التغييرات",
     "saving": "جارٍ الحفظ...",
-    "namePlaceholder": "لوحة غروب الشمس",
+    "englishNamePlaceholder": "لوحة غروب الشمس",
+    "arabicNamePlaceholder": "لوحة غروب الشمس",
     "dimensionsPlaceholder": "40x50 سم",
     "deleteTitle": "حذف <bdi>\"{{name}}\"</bdi>؟",
     "deleteDescription": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف هذا المنتج نهائيًا من الكتالوج.",
@@ -100,7 +102,17 @@
     "deleting": "جارٍ الحذف...",
     "editProductTitle": "تعديل المنتج",
     "editProductDescription": "قم بتحديث تفاصيل العمل الفني في الكتالوج.",
-    "missingProductError": "بيانات المنتج مفقودة"
+    "missingProductError": "بيانات المنتج مفقودة",
+    "desc": "الوصف",
+    "descArabic": "الوصف بالعربية",
+    "englishDescPlaceholder": "قطعة مؤطرة بشكل جميل تناسب أي غرفة",
+    "arabicDescPlaceholder": "قطعة مؤطرة بشكل جميل تناسب أي غرفة",
+    "addSuccess": "تمت إضافة المنتج بنجاح!",
+    "addError": "فشل إضافة المنتج. يرجى المحاولة مرة أخرى.",
+    "deleteSuccess": "تم حذف المنتج",
+    "deleteError": "فشل حذف المنتج",
+    "updateSuccess": "تم تحديث المنتج بنجاح",
+    "updateError": "فشل تحديث المنتج. يرجى المحاولة مرة أخرى."
   },
   "dashboard": {
     "totalRevenue": "إجمالي الإيرادات",
@@ -115,7 +127,8 @@
     "date": "التاريخ",
     "status": "الحالة",
     "total": "الإجمالي",
-    "view": "عرض"
+    "view": "عرض",
+    "ordersByStatus": "الطلبات حسب الحالة"
   },
   "common": {
     "search": "...بحث"

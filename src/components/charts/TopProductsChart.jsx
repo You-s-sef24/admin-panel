@@ -6,31 +6,42 @@ import {
 } from "@/components/ui/chart";
 import { useGetOrders } from "@/hooks/orders/useGetOrders";
 import { useTranslation } from "react-i18next";
+import { useLanguageStore } from "@/store/langStore";
 
 const chartConfig = {
   quantity: { label: "Units Sold", color: "#4f46e5" },
 };
 
-function buildTopProductsData(orders) {
-  const totals = {};
-
-  orders.forEach((order) => {
-    (order.items || []).forEach((item) => {
-      totals[item.productName] =
-        (totals[item.productName] || 0) + item.quantity;
-    });
-  });
-
-  return Object.entries(totals)
-    .map(([productName, quantity]) => ({ productName, quantity }))
-    .sort((a, b) => b.quantity - a.quantity)
-    .slice(0, 6);
-}
-
 export default function TopProductsChart() {
   const { t } = useTranslation();
+  const language = useLanguageStore((s) => s.language);
   const { data: orders, isLoading, isError } = useGetOrders();
 
+  function getDisplayName(productName) {
+    if (!productName) return "";
+    if (typeof productName === "string") return productName;
+    return (
+      (language === "en" ? productName.en : productName.ar) ||
+      productName.en ||
+      ""
+    );
+  }
+
+  function buildTopProductsData(orders) {
+    const totals = {};
+
+    orders.forEach((order) => {
+      (order.items || []).forEach((item) => {
+        const displayName = getDisplayName(item.productName);
+        totals[displayName] = (totals[displayName] || 0) + item.quantity;
+      });
+    });
+
+    return Object.entries(totals)
+      .map(([productName, quantity]) => ({ productName, quantity }))
+      .sort((a, b) => b.quantity - a.quantity)
+      .slice(0, 6);
+  }
   if (isLoading)
     return <p className="text-sm text-gray-500">Loading chart...</p>;
   if (isError)

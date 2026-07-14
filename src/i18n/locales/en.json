@@ -85,6 +85,7 @@
     "addProductTitle": "Add Product",
     "addProductDescription": "Fill in the details to add new artwork to your catalog.",
     "name": "Name",
+    "arabicName": "Arabic Name",
     "priceLabel": "Price ($)",
     "dimensionsLabel": "Dimensions",
     "frameTypeLabel": "Frame Type",
@@ -92,15 +93,27 @@
     "cancel": "Cancel",
     "saveChanges": "Save changes",
     "saving": "Saving...",
-    "namePlaceholder": "Golden Hour Portrait",
+    "englishNamePlaceholder": "Golden Hour Portrait",
+    "arabicNamePlaceholder": "Golden Hour Portrait",
     "dimensionsPlaceholder": "16x20 in",
+    "deleteTitle": "Delete <bdi>\"{{name}}\"</bdi>?",
     "deleteDescription": "This action cannot be undone. This will permanently remove this product from your catalog.",
     "delete": "Delete",
     "deleting": "Deleting...",
-    "deleteTitle": "Delete <bdi>\"{{name}}\"</bdi>?",
     "editProductTitle": "Edit Product",
     "editProductDescription": "Update the details of the artwork in your catalog.",
-    "missingProductError": "Product data is missing"
+    "missingProductError": "Product data is missing",
+    "desc": "Description",
+    "descArabic": "Arabic Description",
+    "englishDescPlaceholder": "A beautifully framed piece for any room",
+    "arabicDescPlaceholder": "A beautifully framed piece for any room",
+    "addSuccess": "Product added successfully!",
+    "addError": "Failed to add product. Please try again.",
+    "deleteSuccess": "Product deleted",
+    "deleteError": "Failed to delete product",
+    "updateSuccess": "Product updated successfully",
+    "updateError": "Failed to update product: {{message}}"
+
   },
   "dashboard": {
     "totalRevenue": "Total Revenue",
@@ -115,7 +128,8 @@
     "date": "Date",
     "status": "Status",
     "total": "Total",
-    "view": "View"
+    "view": "View",
+    "ordersByStatus": "Orders by Status"
   },
   "common": {
     "search": "Search..."
