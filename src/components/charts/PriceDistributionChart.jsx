@@ -6,6 +6,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { getProducts } from "@/api/products";
+import { useTranslation } from "react-i18next";
 
 const RANGES = [
   { label: "$0-50", min: 0, max: 50 },
@@ -28,6 +29,7 @@ const chartConfig = {
 };
 
 export default function PriceDistributionChart() {
+  const { t } = useTranslation();
   const {
     data: products,
     isLoading,
@@ -47,7 +49,7 @@ export default function PriceDistributionChart() {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4">
       <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">
-        Price Distribution
+        {t("dashboard.priceDistribution")}
       </h3>
       <ChartContainer config={chartConfig} className="min-h-[250px] w-full">
         <BarChart data={chartData}>

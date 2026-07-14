@@ -5,6 +5,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useGetOrders } from "@/hooks/orders/useGetOrders";
+import { useTranslation } from "react-i18next";
 
 const chartConfig = {
   quantity: { label: "Units Sold", color: "#4f46e5" },
@@ -27,6 +28,7 @@ function buildTopProductsData(orders) {
 }
 
 export default function TopProductsChart() {
+  const { t } = useTranslation();
   const { data: orders, isLoading, isError } = useGetOrders();
 
   if (isLoading)
@@ -37,9 +39,9 @@ export default function TopProductsChart() {
   const chartData = buildTopProductsData(orders);
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6" dir="ltr">
       <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
-        Top products by sales
+        {t("dashboard.topProductsBySales")}
       </h3>
       <ChartContainer
         config={chartConfig}

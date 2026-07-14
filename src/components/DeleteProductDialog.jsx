@@ -1,4 +1,5 @@
 import { TrashIcon } from "lucide-react";
+import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -12,8 +13,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
+import { useLanguageStore } from "@/store/langStore";
 
 export function DeleteProductDialog({ product }) {
+  const language = useLanguageStore((s) => s.language);
+  const { t } = useTranslation();
   const { mutate: deleteProduct, isPending } = useDeleteProduct();
 
   return (
@@ -26,26 +30,35 @@ export function DeleteProductDialog({ product }) {
             className="size-8 text-red-600 hover:text-red-700"
           >
             <TrashIcon className="size-4" />
-            <span className="sr-only">Delete</span>
+            <span className="sr-only">{t("products.delete")}</span>
           </Button>
         }
       />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete "{product.name}"?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently remove this
-            product from your catalog.
+          <AlertDialogTitle>
+            <Trans
+              i18nKey="products.deleteTitle"
+              values={{ name: product.name }}
+              components={{ bdi: <bdi /> }}
+            />
+          </AlertDialogTitle>
+          <AlertDialogDescription
+            className={language === "ar" ? `text-right` : ""}
+          >
+            {t("products.deleteDescription")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {t("products.cancel")}
+          </AlertDialogCancel>
           <AlertDialogAction
             className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-800 dark:hover:bg-blue-600 transition-all cursor-pointer disabled:opacity-50"
             onClick={() => deleteProduct(product.id)}
             disabled={isPending}
           >
-            {isPending ? "Deleting..." : "Delete"}
+            {isPending ? t("products.deleting") : t("products.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

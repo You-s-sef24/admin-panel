@@ -1,4 +1,5 @@
 import { PencilIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -12,7 +13,8 @@ import { DeleteProductDialog } from "@/components/DeleteProductDialog";
 import { useGetProducts } from "@/hooks/products/useGetProducts";
 import EditProductDialog from "./EditProductDialog";
 
-export function ProductsTable({ search = "", frameType = "" }) {
+export function ProductsTable({ search = "" }) {
+  const { t } = useTranslation();
   const { data: products, isLoading, isError } = useGetProducts();
 
   if (isLoading)
@@ -24,8 +26,7 @@ export function ProductsTable({ search = "", frameType = "" }) {
     const matchesSearch = product.name
       .toLowerCase()
       .includes(search.toLowerCase());
-    const matchesFrame = !frameType || product.frameType === frameType;
-    return matchesSearch && matchesFrame;
+    return matchesSearch;
   });
 
   return (
@@ -33,36 +34,42 @@ export function ProductsTable({ search = "", frameType = "" }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Image</TableHead>
-            <TableHead>Product</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Dimensions</TableHead>
-            <TableHead>Frame</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-start">{t("products.image")}</TableHead>
+            <TableHead className="text-start">
+              {t("products.product")}
+            </TableHead>
+            <TableHead className="text-start">{t("products.price")}</TableHead>
+            <TableHead className="text-start">
+              {t("products.dimensions")}
+            </TableHead>
+            <TableHead className="text-end">{t("products.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {filteredProducts.length === 0 ? (
             <TableRow>
               <TableCell colSpan={6} className="text-center text-gray-500 py-6">
-                No products found.
+                {t("products.noResults")}
               </TableCell>
             </TableRow>
           ) : (
             filteredProducts.map((product) => (
               <TableRow key={product.id}>
-                <TableCell>
+                <TableCell className="text-start">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="object-cover rounded-md size-16"
                   />
                 </TableCell>
-                <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>${product.price}</TableCell>
-                <TableCell>{product.dimensions} in</TableCell>
-                <TableCell>{product.frameType}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="font-medium text-start">
+                  {product.name}
+                </TableCell>
+                <TableCell className="text-start">${product.price}</TableCell>
+                <TableCell className="text-start">
+                  {product.dimensions} in
+                </TableCell>
+                <TableCell className="text-end">
                   <div className="flex justify-end gap-2">
                     <EditProductDialog
                       product={product}
@@ -73,7 +80,7 @@ export function ProductsTable({ search = "", frameType = "" }) {
                           className="size-8"
                         >
                           <PencilIcon className="size-4" />
-                          <span className="sr-only">Edit</span>
+                          <span className="sr-only">{t("products.edit")}</span>
                         </Button>
                       }
                     />

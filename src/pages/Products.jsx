@@ -3,45 +3,36 @@ import Header from "@/components/layout/Header";
 import { ProductsTable } from "@/components/ProductsTable";
 import { Button } from "@/components/ui/button";
 import AddProductDialog from "@/components/AddProductDialog";
+import { useTranslation } from "react-i18next";
 
 export default function Products() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
-  const [frameType, setFrameType] = useState("");
 
   return (
     <div>
-      <Header title="Products" />
+      <Header title={t("sidebar.products")} />
       <div className="p-4">
         <div className="flex justify-between mb-4">
-          <div>
+          <div className="flex items-center gap-2">
             <input
-              placeholder="Search products..."
+              placeholder={t("products.searchPlaceholder")}
               type="search"
-              className="border border-gray-300 rounded-md p-2"
+              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-md p-2 h-10"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <select
-              className="border border-gray-300 rounded-md p-2 ml-2"
-              value={frameType}
-              onChange={(e) => setFrameType(e.target.value)}
-            >
-              <option value="">All Frame Types</option>
-              <option value="Metal">Metal</option>
-              <option value="Wood">Wood</option>
-              <option value="None">None</option>
-            </select>
           </div>
           <AddProductDialog
             show={
               <Button className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-800 dark:hover:bg-blue-600 transition-all cursor-pointer disabled:opacity-50">
-                + Add Product
+                + {t("products.addProduct")}
               </Button>
             }
           />
         </div>
 
-        <ProductsTable search={search} frameType={frameType} />
+        <ProductsTable search={search} />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/store/authStore";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -29,6 +30,7 @@ async function loginRequest({ email, password }) {
 }
 
 export default function Login() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -37,8 +39,8 @@ export default function Login() {
   const setUser = useAuthStore((s) => s.setUser);
 
   const loginSchema = z.object({
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    email: z.string().email(t("login.invalidEmail")),
+    password: z.string().min(8, t("login.passwordMinLength")),
   });
 
   const { mutate, isPending } = useMutation({
@@ -48,7 +50,7 @@ export default function Login() {
       navigate("/dashboard");
     },
     onError: (err) => {
-      toast(err.message || "Something went wrong, please try again");
+      toast(err.message || t("login.genericError"));
     },
   });
 
@@ -58,7 +60,7 @@ export default function Login() {
     const validationResult = loginSchema.safeParse(formData);
     if (!validationResult.success) {
       const firstError = validationResult.error.issues[0]?.message;
-      toast(firstError || "Please check your input");
+      toast(firstError || t("login.checkInput"));
       return;
     }
 
@@ -66,21 +68,23 @@ export default function Login() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="rounded-2xl bg-white shadow-2xl p-8 w-[400px]">
-        <h1 className="text-center text-3xl font-bold text-blue-600">
-          Shopify
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950">
+      <div className="rounded-2xl bg-white dark:bg-gray-900 shadow-2xl p-8 w-[400px]">
+        <h1 className="text-center text-3xl font-bold text-blue-600 dark:text-blue-400">
+          {t("login.brand")}
         </h1>
-        <p className="text-center text-gray-600 mb-8">
-          Sign in to your admin account
+        <p className="text-center text-gray-600 dark:text-gray-400 mb-8">
+          {t("login.subtitle")}
         </p>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
-            <label className="font-medium">Email Address</label>
+            <label className="font-medium text-gray-900 dark:text-gray-100">
+              {t("login.email")}
+            </label>
             <input
               type="email"
               placeholder="admin@nexus.io"
-              className="border border-gray-300 rounded-md p-2"
+              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md p-2"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
@@ -88,11 +92,13 @@ export default function Login() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-medium">Password</label>
+            <label className="font-medium text-gray-900 dark:text-gray-100">
+              {t("login.password")}
+            </label>
             <input
               type="password"
               placeholder="********"
-              className="border border-gray-300 rounded-md p-2"
+              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md p-2"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
@@ -101,10 +107,10 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600 transition-colors cursor-pointer disabled:opacity-50"
+            className="bg-blue-500 dark:bg-blue-600 text-white rounded-md p-2 hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50"
             disabled={isPending}
           >
-            {isPending ? "Signing in..." : "Sign In"}
+            {isPending ? t("login.signingIn") : t("login.signIn")}
           </button>
         </form>
       </div>

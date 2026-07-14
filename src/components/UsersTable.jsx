@@ -9,8 +9,10 @@ import {
 import { useGetUsers } from "@/hooks/users/useGetUsers";
 import { getAvatarColor, getInitials } from "@/lib/avatarColor";
 import { formatDate } from "@/lib/formatDate";
+import { useTranslation } from "react-i18next";
 
 export function UsersTable({ search = "" }) {
+  const { t } = useTranslation();
   const { data: users, isLoading, isError } = useGetUsers();
 
   if (isLoading)
@@ -29,22 +31,22 @@ export function UsersTable({ search = "" }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Email address</TableHead>
-            <TableHead>Joined</TableHead>
+            <TableHead className="text-start">{t("users.name")}</TableHead>
+            <TableHead className="text-start">{t("users.email")}</TableHead>
+            <TableHead className="text-start">{t("users.joined")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {filteredUsers.length === 0 ? (
             <TableRow>
               <TableCell colSpan={3} className="text-center text-gray-500 py-6">
-                No customers found.
+                {t("users.noResults")}
               </TableCell>
             </TableRow>
           ) : (
             filteredUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>
+                <TableCell className="text-start">
                   <div className="flex items-center gap-3">
                     <div
                       className={`size-8 rounded-full flex items-center justify-center text-white text-xs font-semibold ${getAvatarColor(user.name)}`}
@@ -54,8 +56,10 @@ export function UsersTable({ search = "" }) {
                     <span className="font-medium">{user.name}</span>
                   </div>
                 </TableCell>
-                <TableCell className="text-gray-500">{user.email}</TableCell>
-                <TableCell className="text-gray-500">
+                <TableCell className="text-gray-500 text-start">
+                  {user.email}
+                </TableCell>
+                <TableCell className="text-gray-500 text-start">
                   {formatDate(user.createdAt)}
                 </TableCell>
               </TableRow>

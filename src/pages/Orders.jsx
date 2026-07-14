@@ -1,31 +1,36 @@
 import Header from "@/components/layout/Header";
 import { OrdersTable } from "@/components/OrdersTable";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Orders() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+
   return (
     <div>
-      <Header title="Orders" />
+      <Header title={t("sidebar.orders")} />
       <div className="p-4">
         <div className="flex justify-between mb-4">
-          <div>
+          <div className="flex items-center gap-2">
             <input
-              placeholder="Search orders..."
+              placeholder={t("orders.searchPlaceholder", "Search orders...")}
               type="search"
-              className="border border-gray-300 rounded-md p-2"
+              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-md p-2 h-10"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
             <select
-              className="border border-gray-300 rounded-md p-2 ml-2"
+              className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-md p-2 h-10"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Delivered">Delivered</option>
+              <option value="">{t("orders.allStatus", "All Status")}</option>
+              <option value="Pending">{t("orders.Pending")}</option>
+              <option value="Delivered">
+                {t("orders.Delivered")}
+              </option>
             </select>
           </div>
         </div>

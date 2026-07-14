@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -10,19 +11,19 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
-const navItems = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/products", label: "Products", icon: Package },
-  { to: "/orders", label: "Orders", icon: ShoppingCart },
-  { to: "/users", label: "Users", icon: Users },
-  { to: "/settings", label: "Settings", icon: Settings },
-];
-
 export default function AppSidebar({ isOpen, onClose }) {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const navItems = [
+    { to: "/dashboard", label: t("sidebar.dashboard"), icon: LayoutDashboard },
+    { to: "/products", label: t("sidebar.products"), icon: Package },
+    { to: "/orders", label: t("sidebar.orders"), icon: ShoppingCart },
+    { to: "/users", label: t("sidebar.users"), icon: Users },
+    { to: "/settings", label: t("sidebar.settings"), icon: Settings },
+  ];
   function handleLogout() {
     logout();
     navigate("/");
@@ -92,7 +93,7 @@ export default function AppSidebar({ isOpen, onClose }) {
             className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors cursor-pointer"
           >
             <LogOut size={18} />
-            Logout
+            {t("sidebar.logout")}
           </button>
         </div>
       </aside>

@@ -12,24 +12,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useState } from "react";
 import z from "zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export default function AddProductDialog({ show }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     dimensions: "",
-    frameType: "",
     image: null,
   });
   const { mutate: createProduct, isPending } = useAddProduct();
@@ -38,7 +32,6 @@ export default function AddProductDialog({ show }) {
     name: z.string().min(1, "Name is required"),
     price: z.coerce.number().min(0, "Price must be a positive number"),
     dimensions: z.string().optional(),
-    frameType: z.enum(["Wood", "Metal", "None"]).optional(),
     image: z.instanceof(File, { message: "Please upload an image" }),
   });
 
@@ -56,7 +49,6 @@ export default function AddProductDialog({ show }) {
         name: formData.name,
         price: formData.price,
         dimensions: formData.dimensions,
-        frameType: formData.frameType,
         image: formData.image,
       },
       {
@@ -66,7 +58,6 @@ export default function AddProductDialog({ show }) {
             name: "",
             price: "",
             dimensions: "",
-            frameType: "",
             image: null,
           });
         },
@@ -79,19 +70,19 @@ export default function AddProductDialog({ show }) {
       <DialogTrigger render={show} />
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Add Product</DialogTitle>
+          <DialogTitle>{t("products.addProductTitle")}</DialogTitle>
           <DialogDescription>
-            Fill in the details to add new artwork to your catalog.
+            {t("products.addProductDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("products.name")}</Label>
             <Input
               id="name"
               name="name"
-              placeholder="Golden Hour Portrait"
+              placeholder={t("products.namePlaceholder")}
               value={formData.name || ""}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -100,7 +91,7 @@ export default function AddProductDialog({ show }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="price">Price ($)</Label>
+            <Label htmlFor="price">{t("products.priceLabel")}</Label>
             <Input
               id="price"
               name="price"
@@ -115,7 +106,7 @@ export default function AddProductDialog({ show }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="image">Image</Label>
+            <Label htmlFor="image">{t("products.image")}</Label>
             <Input
               id="image"
               type="file"
@@ -127,11 +118,11 @@ export default function AddProductDialog({ show }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="dimensions">Dimensions</Label>
+            <Label htmlFor="dimensions">{t("products.dimensionsLabel")}</Label>
             <Input
               id="dimensions"
               name="dimensions"
-              placeholder="16x20 in"
+              placeholder={t("products.dimensionsPlaceholder")}
               value={formData.dimensions || ""}
               onChange={(e) =>
                 setFormData({ ...formData, dimensions: e.target.value })
@@ -139,37 +130,17 @@ export default function AddProductDialog({ show }) {
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="frameType">Frame Type</Label>
-            <Select
-              name="frameType"
-              value={formData.frameType || ""}
-              onValueChange={(value) =>
-                setFormData({ ...formData, frameType: value })
-              }
-            >
-              <SelectTrigger id="frameType" className="w-full">
-                <SelectValue placeholder="Select frame type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Wood">Wood</SelectItem>
-                <SelectItem value="Metal">Metal</SelectItem>
-                <SelectItem value="None">None</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <DialogFooter>
             <DialogClose
               disabled={isPending}
-              render={<Button variant="outline">Cancel</Button>}
+              render={<Button variant="outline">{t("products.cancel")}</Button>}
             />
             <Button
               className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-800 dark:hover:bg-blue-600 transition-all cursor-pointer disabled:opacity-50"
               type="submit"
               disabled={isPending}
             >
-              {isPending ? "Saving..." : "Save changes"}
+              {isPending ? t("products.saving") : t("products.saveChanges")}
             </Button>
           </DialogFooter>
         </form>

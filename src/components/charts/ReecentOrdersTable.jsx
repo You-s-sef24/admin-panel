@@ -11,6 +11,7 @@ import { useGetOrders } from "@/hooks/orders/useGetOrders";
 import { Button } from "../ui/button";
 import { EyeIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const statusStyles = {
   Delivered:
@@ -23,6 +24,7 @@ function formatDate(timestamp) {
 }
 
 export default function RecentOrdersTable() {
+  const { t } = useTranslation();
   const { data: orders, isLoading, isError } = useGetOrders();
   const navigate = useNavigate();
 
@@ -38,42 +40,49 @@ export default function RecentOrdersTable() {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6">
       <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
-        Recent orders
+        {t("dashboard.recentOrders")}
       </h3>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Order ID</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Total</TableHead>
-            <TableHead className="text-right">View</TableHead>
+            <TableHead className="text-start">
+              {t("dashboard.orderId")}
+            </TableHead>
+            <TableHead className="text-start">
+              {t("dashboard.customer")}
+            </TableHead>
+            <TableHead className="text-start">{t("dashboard.date")}</TableHead>
+            <TableHead className="text-start">
+              {t("dashboard.status")}
+            </TableHead>
+            <TableHead className="text-end">{t("dashboard.total")}</TableHead>
+            <TableHead className="text-end">{t("dashboard.view")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {recentOrders.map((order) => (
             <TableRow key={order.id}>
-              <TableCell className="font-medium text-indigo-600 dark:text-indigo-400">
+              <TableCell className="font-medium text-indigo-600 dark:text-indigo-400 text-start">
                 ORD-{order.id}
               </TableCell>
-              <TableCell>{order.customerName}</TableCell>
-              <TableCell className="text-gray-500 dark:text-gray-400">
+              <TableCell className="text-start">{order.customerName}</TableCell>
+              <TableCell className="text-gray-500 dark:text-gray-400 text-start">
                 {formatDate(order.createdAt)}
               </TableCell>
-              <TableCell>
+              <TableCell className="text-start">
                 <Badge
                   className={
-                    statusStyles[order.status] || "bg-gray-100 text-gray-700"
+                    statusStyles[order.status] ||
+                    "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                   }
                 >
                   {order.status}
                 </Badge>
               </TableCell>
-              <TableCell className="text-right font-medium">
+              <TableCell className="text-end font-medium">
                 ${order.total}
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-end">
                 <Button
                   variant="outline"
                   size="icon"
@@ -81,7 +90,7 @@ export default function RecentOrdersTable() {
                   onClick={() => navigate(`/orders/${order.id}`)}
                 >
                   <EyeIcon className="size-4" />
-                  <span className="sr-only">View</span>
+                  <span className="sr-only">{t("dashboard.view")}</span>
                 </Button>
               </TableCell>
             </TableRow>

@@ -11,19 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
 import z from "zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export default function EditProductDialog({ show, product }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(product || {});
   const { mutate: updateProduct, isPending } = useUpdateProduct();
@@ -38,13 +33,13 @@ export default function EditProductDialog({ show, product }) {
     name: z.string().min(1, "Name is required"),
     price: z.number().min(0, "Price must be a positive number"),
     dimensions: z.string().optional(),
-    frameType: z.enum(["Wood", "Metal", "None"]).optional(),
     image: z.union([z.string(), z.instanceof(File)]).optional(),
   });
+
   function handleSubmit(e) {
     e.preventDefault();
     if (!product) {
-      toast.error("Product data is missing");
+      toast.error(t("products.missingProductError"));
       return;
     }
     const validationResult = formSchema.safeParse(formData);
@@ -60,7 +55,6 @@ export default function EditProductDialog({ show, product }) {
         name: formData.name,
         price: formData.price,
         dimensions: formData.dimensions,
-        frameType: formData.frameType,
         image: formData.image,
       },
       {
@@ -77,19 +71,19 @@ export default function EditProductDialog({ show, product }) {
       <DialogTrigger render={show} />
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Edit Product</DialogTitle>
+          <DialogTitle>{t("products.editProductTitle")}</DialogTitle>
           <DialogDescription>
-            Update the details of the artwork in your catalog.
+            {t("products.editProductDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("products.name")}</Label>
             <Input
               id="name"
               name="name"
-              placeholder="Golden Hour Portrait"
+              placeholder={t("products.namePlaceholder")}
               value={formData.name || ""}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -98,7 +92,7 @@ export default function EditProductDialog({ show, product }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="price">Price ($)</Label>
+            <Label htmlFor="price">{t("products.priceLabel")}</Label>
             <Input
               id="price"
               name="price"
@@ -113,7 +107,7 @@ export default function EditProductDialog({ show, product }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="image">Image</Label>
+            <Label htmlFor="image">{t("products.image")}</Label>
             <Input
               id="image"
               type="file"
@@ -125,11 +119,11 @@ export default function EditProductDialog({ show, product }) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="dimensions">Dimensions</Label>
+            <Label htmlFor="dimensions">{t("products.dimensionsLabel")}</Label>
             <Input
               id="dimensions"
               name="dimensions"
-              placeholder="16x20 in"
+              placeholder={t("products.dimensionsPlaceholder")}
               value={formData.dimensions || ""}
               onChange={(e) =>
                 setFormData({ ...formData, dimensions: e.target.value })
@@ -137,29 +131,9 @@ export default function EditProductDialog({ show, product }) {
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="frameType">Frame Type</Label>
-            <Select
-              name="frameType"
-              value={formData.frameType || ""}
-              onValueChange={(value) =>
-                setFormData({ ...formData, frameType: value })
-              }
-            >
-              <SelectTrigger id="frameType" className="w-full">
-                <SelectValue placeholder="Select frame type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Wood">Wood</SelectItem>
-                <SelectItem value="Metal">Metal</SelectItem>
-                <SelectItem value="None">None</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <DialogFooter>
             <DialogClose
-              render={<Button variant="outline">Cancel</Button>}
+              render={<Button variant="outline">{t("products.cancel")}</Button>}
               disabled={isPending}
             />
             <Button
@@ -167,7 +141,7 @@ export default function EditProductDialog({ show, product }) {
               type="submit"
               disabled={isPending}
             >
-              {isPending ? "Saving..." : "Save changes"}
+              {isPending ? t("products.saving") : t("products.saveChanges")}
             </Button>
           </DialogFooter>
         </form>
