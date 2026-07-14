@@ -39,8 +39,8 @@ export default function AppSidebar({ isOpen, onClose }) {
       )}
 
       <aside
-        className={`fixed md:static top-0 left-0 z-50 flex flex-col w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-transform duration-200
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        className={`fixed md:static top-0 start-0 z-50 flex flex-col w-64 h-screen bg-white dark:bg-gray-900 border-e border-gray-200 dark:border-gray-800 transition-transform duration-200
+          ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"} md:translate-x-0`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-800">
           <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">
