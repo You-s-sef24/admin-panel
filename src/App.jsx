@@ -6,9 +6,9 @@ import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
-import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./components/layout/AdminLayout";
 import { Toaster } from "sonner";
+import ProtectedRoute from "./components/Protectedroute ";
 
 function App() {
   return (

@@ -15,9 +15,9 @@ import { Badge } from "./ui/badge";
 import { formatDate } from "@/lib/formatDate";
 
 const statusStyles = {
-  Delivered:
+  delivered:
     "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400",
-  Pending: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400",
+  pending: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400",
 };
 
 export function OrdersTable({ search = "", status = "" }) {
@@ -26,12 +26,12 @@ export function OrdersTable({ search = "", status = "" }) {
   const { data: orders, isLoading, isError } = useGetOrders();
 
   if (isLoading)
-    return <p className="text-sm text-gray-500">Loading orders...</p>;
+    return <p className="text-sm text-gray-500">{t("orders.loading")}</p>;
   if (isError)
-    return <p className="text-sm text-red-500">Failed to load orders</p>;
+    return <p className="text-sm text-red-500">{t("orders.loadError")}</p>;
 
-  const filteredOrders = orders.filter((order) => {
-    const matchesSearch = order.customerName
+  const filteredOrders = (orders ?? []).filter((order) => {
+    const matchesSearch = (order.customerName || "")
       .toLowerCase()
       .includes(search.toLowerCase());
     const matchesStatus = !status || order.status === status;
@@ -39,14 +39,14 @@ export function OrdersTable({ search = "", status = "" }) {
   });
 
   function calculateTotalPrice(items) {
-    return items.reduce(
+    return (items || []).reduce(
       (sum, item) => sum + Number(item.price) * item.quantity,
       0,
     );
   }
 
   function calculateItems(items) {
-    return items.reduce((sum, item) => sum + item.quantity, 0);
+    return (items || []).reduce((sum, item) => sum + item.quantity, 0);
   }
 
   return (

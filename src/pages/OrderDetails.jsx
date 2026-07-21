@@ -24,19 +24,29 @@ export default function OrderDetails() {
   const { mutate: updateOrder, isPending } = useUpdateOrder();
 
   if (isLoading)
-    return <p className="p-4 text-sm text-gray-500">Loading order...</p>;
+    return (
+      <p className="p-4 text-sm text-gray-500">{t("orderDetails.loading")}</p>
+    );
   if (isError || !order)
     return (
       <p className="p-4 text-sm text-red-500">{t("orderDetails.notFound")}</p>
     );
 
-  const total = order.items.reduce(
+  const total = (order.items || []).reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
 
   function handleStatusChange(newStatus) {
     updateOrder({ id: order.id, ...order, status: newStatus });
+  }
+
+  function getItemName(item) {
+    if (!item?.name) return "";
+    if (typeof item.name === "string") return item.name;
+    return (
+      (language === "en" ? item.name.en : item.name.ar) || item.name.en || ""
+    );
   }
 
   return (
@@ -91,11 +101,11 @@ export default function OrderDetails() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Delivered">
-                  {t("orderDetails.Delivered")}
+                <SelectItem value="delivered">
+                  {t("orderDetails.delivered")}
                 </SelectItem>
-                <SelectItem value="Pending">
-                  {t("orderDetails.Pending")}
+                <SelectItem value="pending">
+                  {t("orderDetails.pending")}
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -115,16 +125,14 @@ export default function OrderDetails() {
             {t("orderDetails.items")}
           </h3>
           <div className="flex flex-col gap-3">
-            {order.items.map((item, idx) => (
+            {(order.items || []).map((item, idx) => (
               <div
                 key={idx}
                 className="flex justify-between border-b border-gray-200 dark:border-gray-800 pb-2 last:border-b-0"
               >
                 <div>
                   <p className="font-medium text-gray-900 dark:text-gray-100">
-                    {language === "en"
-                      ? item.productName.en
-                      : item.productName.ar || item.productName.en}
+                    {getItemName(item)}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {t("orderDetails.qty")}: {item.quantity}

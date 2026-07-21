@@ -35,14 +35,15 @@
   "users": {
     "name": "الاسم",
     "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
     "joined": "تاريخ الانضمام",
     "noResults": "لا يوجد عملاء."
   },
   "orders": {
     "searchPlaceholder": "بحث عن الطلبات...",
     "allStatus": "كل الحالات",
-    "Pending": "قيد الانتظار",
-    "Delivered": "تم التوصيل",
+    "pending": "قيد الانتظار",
+    "delivered": "تم التوصيل",
     "orderId": "رقم الطلب",
     "customer": "العميل",
     "date": "التاريخ",
@@ -50,7 +51,8 @@
     "total": "الإجمالي",
     "status": "الحالة",
     "view": "عرض",
-    "noResults": "لا توجد طلبات."
+    "noResults": "لا توجد طلبات.",
+    "loading": "جار التحميل..."
   },
   "orderDetails": {
     "title": "طلب",
@@ -65,7 +67,8 @@
     "total": "الإجمالي",
     "Delivered": "تم التوصيل",
     "Pending": "قيد الانتظار",
-    "notFound": "الطلب غير موجود"
+    "notFound": "الطلب غير موجود",
+    "loading": "جار التحميل..."
   },
   "products": {
     "searchPlaceholder": "بحث عن المنتجات...",
@@ -74,10 +77,13 @@
     "wood": "خشب",
     "none": "بدون",
     "addProduct": "إضافة منتج",
+    "productFound": "منتج موجود",
     "image": "الصورة",
     "product": "المنتج",
+    "category": "الفئة",
     "price": "السعر",
     "dimensions": "الأبعاد",
+    "in": "بوصة",
     "frame": "الإطار",
     "actions": "الإجراءات",
     "noResults": "لا توجد منتجات.",
@@ -95,7 +101,7 @@
     "saving": "جارٍ الحفظ...",
     "englishNamePlaceholder": "لوحة غروب الشمس",
     "arabicNamePlaceholder": "لوحة غروب الشمس",
-    "dimensionsPlaceholder": "40x50 سم",
+    "dimensionsPlaceholder": "40x50",
     "deleteTitle": "حذف <bdi>\"{{name}}\"</bdi>؟",
     "deleteDescription": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف هذا المنتج نهائيًا من الكتالوج.",
     "delete": "حذف",
@@ -118,7 +124,13 @@
     "totalRevenue": "إجمالي الإيرادات",
     "totalUsers": "إجمالي المستخدمين",
     "totalOrders": "إجمالي الطلبات",
+    "totalPendingOrders": "إجمالي الطلبات المعلقة",
     "totalProducts": "إجمالي المنتجات",
+    "orderStatus": {
+      "pending": "قيد الانتظار",
+      "delivered": "تم التوصيل"
+    },
+    "productsByCategory": "المنتجات حسب الفئة",
     "priceDistribution": "توزيع الأسعار",
     "topProductsBySales": "الأكثر مبيعًا",
     "recentOrders": "الطلبات الأخيرة",

@@ -4,16 +4,16 @@ import { getUsers } from "@/api/users";
 import AnalyticsCard from "@/components/AnalyticsCard";
 import OrdersByStatusChart from "@/components/charts/OrdersByStatus";
 import SalesTrendChart from "@/components/charts/PriceDistributionChart";
+import ProductsByCategoryChart from "@/components/charts/Productsbycategorychart ";
 import RecentOrdersTable from "@/components/charts/ReecentOrdersTable";
 import TopProductsChart from "@/components/charts/TopProductsChart";
 import Header from "@/components/layout/Header";
 import { useQuery } from "@tanstack/react-query";
-import { Package, ShoppingCartIcon, TrendingUp, UsersIcon } from "lucide-react";
+import { Clock, Package, TrendingUp, UsersIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { t } = useTranslation();
-
   const { data: products } = useQuery({
     queryKey: ["products"],
     queryFn: getProducts,
@@ -28,8 +28,16 @@ export default function Dashboard() {
     queryKey: ["orders"],
     queryFn: getOrders,
   });
+
+  console.log(orders);
+
+  const totalUsers = users?.filter((u) => !u.isAdmin).length || 0;
+
   const totalRevenue =
     orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
+
+  const totalPendingOrders =
+    orders?.filter((order) => order.status !== "Pending").length || 0;
 
   return (
     <div className="bg-gray-100 dark:bg-gray-950 min-h-screen">
@@ -42,27 +50,28 @@ export default function Dashboard() {
         />
         <AnalyticsCard
           title={t("dashboard.totalUsers")}
-          value={users?.length || 0}
+          value={totalUsers}
           icon={<UsersIcon />}
-        />
-        <AnalyticsCard
-          title={t("dashboard.totalOrders")}
-          value={orders?.length || 0}
-          icon={<ShoppingCartIcon />}
         />
         <AnalyticsCard
           title={t("dashboard.totalProducts")}
           value={products?.length || 0}
           icon={<Package />}
         />
+        <AnalyticsCard
+          title={t("dashboard.totalPendingOrders")}
+          value={totalPendingOrders}
+          icon={<Clock />}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
         <OrdersByStatusChart />
-        <SalesTrendChart />
+        <ProductsByCategoryChart />
       </div>
-      <div className="p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
         <TopProductsChart />
+        <SalesTrendChart />
       </div>
       <div className="p-4">
         <RecentOrdersTable />

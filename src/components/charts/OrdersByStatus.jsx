@@ -10,24 +10,30 @@ import { useGetOrders } from "@/hooks/orders/useGetOrders";
 import { useTranslation } from "react-i18next";
 
 const STATUS_COLORS = {
-  Pending: "#f59e0b",
-  Delivered: "#22c55e",
-};
-
-const chartConfig = {
-  Pending: { label: "Pending", color: STATUS_COLORS.Pending },
-  Delivered: { label: "Delivered", color: STATUS_COLORS.Delivered },
+  pending: "#f59e0b",
+  delivered: "#22c55e",
 };
 
 export default function OrdersByStatusChart() {
   const { t } = useTranslation();
   const { data: orders, isLoading, isError } = useGetOrders();
 
+  const chartConfig = {
+    pending: {
+      label: t("dashboard.orderStatus.pending"),
+      color: STATUS_COLORS.pending,
+    },
+    delivered: {
+      label: t("dashboard.orderStatus.delivered"),
+      color: STATUS_COLORS.delivered,
+    },
+  };
+
   function buildStatusData(orders) {
     const totals = {};
 
-    orders.forEach((order) => {
-      const status = order.status || "Unknown";
+    (orders ?? []).forEach((order) => {
+      const status = order.status || "unknown";
       totals[status] = (totals[status] || 0) + 1;
     });
 
@@ -39,11 +45,26 @@ export default function OrdersByStatusChart() {
   }
 
   if (isLoading)
-    return <p className="text-sm text-gray-500">Loading chart...</p>;
+    return (
+      <p className="text-sm text-gray-500">{t("dashboard.loadingChart")}</p>
+    );
   if (isError)
-    return <p className="text-sm text-red-500">Failed to load order data</p>;
+    return <p className="text-sm text-red-500">{t("dashboard.chartError")}</p>;
 
   const chartData = buildStatusData(orders);
+
+  if (chartData.length === 0)
+    return (
+      <div
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6"
+        dir="ltr"
+      >
+        <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
+          {t("dashboard.ordersByStatus")}
+        </h3>
+        <p className="text-sm text-gray-500">{t("dashboard.noOrders")}</p>
+      </div>
+    );
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6" dir="ltr">

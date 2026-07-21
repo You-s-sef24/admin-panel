@@ -16,14 +16,14 @@ export function UsersTable({ search = "" }) {
   const { data: users, isLoading, isError } = useGetUsers();
 
   if (isLoading)
-    return <p className="text-sm text-gray-500">Loading users...</p>;
+    return <p className="text-sm text-gray-500">{t("users.loading")}</p>;
   if (isError)
-    return <p className="text-sm text-red-500">Failed to load users</p>;
+    return <p className="text-sm text-red-500">{t("users.loadError")}</p>;
 
-  const filteredUsers = users.filter(
+  const filteredUsers = (users ?? []).filter(
     (user) =>
-      user.role === "Customer" &&
-      user.name.toLowerCase().includes(search.toLowerCase()),
+      !user.isAdmin &&
+      (user.name || "").toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -33,6 +33,7 @@ export function UsersTable({ search = "" }) {
           <TableRow>
             <TableHead className="text-start">{t("users.name")}</TableHead>
             <TableHead className="text-start">{t("users.email")}</TableHead>
+            <TableHead className="text-start">{t("users.phone")}</TableHead>
             <TableHead className="text-start">{t("users.joined")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -58,6 +59,9 @@ export function UsersTable({ search = "" }) {
                 </TableCell>
                 <TableCell className="text-gray-500 text-start">
                   {user.email}
+                </TableCell>
+                <TableCell className="text-gray-500 text-start">
+                  {user.phone}
                 </TableCell>
                 <TableCell className="text-gray-500 text-start">
                   {formatDate(user.createdAt)}

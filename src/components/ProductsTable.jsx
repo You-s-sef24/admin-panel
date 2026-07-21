@@ -28,82 +28,110 @@ export function ProductsTable({ search = "" }) {
     const query = search.toLowerCase();
     return (
       (product.name.en || "").toLowerCase().includes(query) ||
-      (product.name.ar || "").toLowerCase().includes(query)
+      (product.name.ar || "").toLowerCase().includes(query) ||
+      (product.category.en || "").toLowerCase().includes(query) ||
+      (product.category.ar || "").toLowerCase().includes(query)
     );
   });
 
   return (
-    <div className="border rounded-2xl p-2">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-start">{t("products.image")}</TableHead>
-            <TableHead className="text-start">
-              {t("products.product")}
-            </TableHead>
-            <TableHead className="text-start">{t("products.price")}</TableHead>
-            <TableHead className="text-start">
-              {t("products.dimensions")}
-            </TableHead>
-            <TableHead className="text-end">{t("products.actions")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredProducts.length === 0 ? (
+    <>
+      <h1 className="mb-2">
+        {filteredProducts.length} {t("products.productFound")}
+      </h1>
+      <div className="border rounded-2xl p-2">
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={6} className="text-center text-gray-500 py-6">
-                {t("products.noResults")}
-              </TableCell>
+              <TableHead className="text-start">
+                {t("products.image")}
+              </TableHead>
+              <TableHead className="text-start">
+                {t("products.product")}
+              </TableHead>
+              <TableHead className="text-start">
+                {t("products.category")}
+              </TableHead>
+              <TableHead className="text-start">
+                {t("products.price")}
+              </TableHead>
+              <TableHead className="text-start">
+                {t("products.dimensions")}
+              </TableHead>
+              <TableHead className="text-end">
+                {t("products.actions")}
+              </TableHead>
             </TableRow>
-          ) : (
-            filteredProducts.map((product) => {
-              const displayName =
-                language === "en"
-                  ? product.name.en
-                  : product.name.ar || product.name.en;
+          </TableHeader>
+          <TableBody>
+            {filteredProducts.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="text-center text-gray-500 py-6"
+                >
+                  {t("products.noResults")}
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredProducts.map((product) => {
+                const displayName =
+                  language === "en"
+                    ? product.name.en
+                    : product.name.ar || product.name.en;
+                const displayCategory =
+                  language === "en"
+                    ? product.category.en
+                    : product.category.ar || product.name.en;
 
-              return (
-                <TableRow key={product.id}>
-                  <TableCell className="text-start">
-                    <img
-                      src={product.image}
-                      alt={displayName}
-                      className="object-cover rounded-md size-16"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium text-start">
-                    {displayName}
-                  </TableCell>
-                  <TableCell className="text-start">${product.price}</TableCell>
-                  <TableCell className="text-start">
-                    {product.dimensions} in
-                  </TableCell>
-                  <TableCell className="text-end">
-                    <div className="flex justify-end gap-2">
-                      <EditProductDialog
-                        product={product}
-                        show={
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="size-8"
-                          >
-                            <PencilIcon className="size-4" />
-                            <span className="sr-only">
-                              {t("products.edit")}
-                            </span>
-                          </Button>
-                        }
+                return (
+                  <TableRow key={product.id}>
+                    <TableCell className="text-start">
+                      <img
+                        src={product.image}
+                        alt={displayName}
+                        className="object-cover rounded-md size-16"
                       />
-                      <DeleteProductDialog product={product} />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          )}
-        </TableBody>
-      </Table>
-    </div>
+                    </TableCell>
+                    <TableCell className="font-medium text-start">
+                      {displayName}
+                    </TableCell>
+                    <TableCell className="font-medium text-start">
+                      {displayCategory}
+                    </TableCell>
+                    <TableCell className="text-start">
+                      ${product.price}
+                    </TableCell>
+                    <TableCell className="text-start">
+                      {product.dimensions} {t("products.in")}
+                    </TableCell>
+                    <TableCell className="text-end">
+                      <div className="flex justify-end gap-2">
+                        <EditProductDialog
+                          product={product}
+                          show={
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="size-8"
+                            >
+                              <PencilIcon className="size-4" />
+                              <span className="sr-only">
+                                {t("products.edit")}
+                              </span>
+                            </Button>
+                          }
+                        />
+                        <DeleteProductDialog product={product} />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 }

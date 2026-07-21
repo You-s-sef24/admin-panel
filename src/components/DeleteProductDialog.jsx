@@ -19,6 +19,7 @@ export function DeleteProductDialog({ product }) {
   const language = useLanguageStore((s) => s.language);
   const { t } = useTranslation();
   const { mutate: deleteProduct, isPending } = useDeleteProduct();
+  const nameDisplayed = language === "en" ? product.name.en : product.name.ar;
 
   return (
     <AlertDialog>
@@ -39,7 +40,7 @@ export function DeleteProductDialog({ product }) {
           <AlertDialogTitle>
             <Trans
               i18nKey="products.deleteTitle"
-              values={{ name: product.name }}
+              values={{ name: nameDisplayed }}
               components={{ bdi: <bdi /> }}
             />
           </AlertDialogTitle>

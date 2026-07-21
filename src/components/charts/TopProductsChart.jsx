@@ -8,14 +8,14 @@ import { useGetOrders } from "@/hooks/orders/useGetOrders";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "@/store/langStore";
 
-const chartConfig = {
-  quantity: { label: "Units Sold", color: "#4f46e5" },
-};
-
 export default function TopProductsChart() {
   const { t } = useTranslation();
   const language = useLanguageStore((s) => s.language);
   const { data: orders, isLoading, isError } = useGetOrders();
+
+  const chartConfig = {
+    quantity: { label: t("dashboard.unitsSold"), color: "#4f46e5" },
+  };
 
   function getDisplayName(productName) {
     if (!productName) return "";
@@ -30,10 +30,11 @@ export default function TopProductsChart() {
   function buildTopProductsData(orders) {
     const totals = {};
 
-    orders.forEach((order) => {
+    (orders ?? []).forEach((order) => {
       (order.items || []).forEach((item) => {
-        const displayName = getDisplayName(item.productName);
-        totals[displayName] = (totals[displayName] || 0) + item.quantity;
+        const displayName = getDisplayName(item.name);
+        if (!displayName) return;
+        totals[displayName] = (totals[displayName] || 0) + (item.quantity || 0);
       });
     });
 
@@ -42,12 +43,28 @@ export default function TopProductsChart() {
       .sort((a, b) => b.quantity - a.quantity)
       .slice(0, 6);
   }
+
   if (isLoading)
-    return <p className="text-sm text-gray-500">Loading chart...</p>;
+    return (
+      <p className="text-sm text-gray-500">{t("dashboard.loadingChart")}</p>
+    );
   if (isError)
-    return <p className="text-sm text-red-500">Failed to load order data</p>;
+    return <p className="text-sm text-red-500">{t("dashboard.chartError")}</p>;
 
   const chartData = buildTopProductsData(orders);
+
+  if (chartData.length === 0)
+    return (
+      <div
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6"
+        dir="ltr"
+      >
+        <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
+          {t("dashboard.topProductsBySales")}
+        </h3>
+        <p className="text-sm text-gray-500">{t("dashboard.noOrders")}</p>
+      </div>
+    );
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow p-6" dir="ltr">

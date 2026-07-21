@@ -35,14 +35,15 @@
   "users": {
     "name": "Name",
     "email": "Email address",
+    "phone": "Phone Number",
     "joined": "Joined",
     "noResults": "No customers found."
   },
   "orders": {
     "searchPlaceholder": "Search orders...",
     "allStatus": "All Status",
-    "Pending": "Pending",
-    "Delivered": "Delivered",
+    "pending": "Pending",
+    "delivered": "Delivered",
     "orderId": "Order ID",
     "customer": "Customer",
     "date": "Date",
@@ -50,7 +51,8 @@
     "total": "Total",
     "status": "Status",
     "view": "View",
-    "noResults": "No orders found."
+    "noResults": "No orders found.",
+    "loading": "Loading..."
   },
   "orderDetails": {
     "title": "Order",
@@ -63,9 +65,10 @@
     "items": "Items",
     "qty": "Qty",
     "total": "Total",
-    "Delivered": "Delivered",
-    "Pending": "Pending",
-    "notFound": "Order not found"
+    "delivered": "Delivered",
+    "pending": "Pending",
+    "notFound": "Order not found",
+    "loading": "Loading..."
   },
   "products": {
     "searchPlaceholder": "Search products...",
@@ -74,10 +77,13 @@
     "wood": "Wood",
     "none": "None",
     "addProduct": "Add Product",
+    "productFound": "Product(s) Found",
     "image": "Image",
     "product": "Product",
+    "category": "Category",
     "price": "Price",
     "dimensions": "Dimensions",
+    "in": "in",
     "frame": "Frame",
     "actions": "Actions",
     "noResults": "No products found.",
@@ -95,7 +101,7 @@
     "saving": "Saving...",
     "englishNamePlaceholder": "Golden Hour Portrait",
     "arabicNamePlaceholder": "Golden Hour Portrait",
-    "dimensionsPlaceholder": "16x20 in",
+    "dimensionsPlaceholder": "16x20",
     "deleteTitle": "Delete <bdi>\"{{name}}\"</bdi>?",
     "deleteDescription": "This action cannot be undone. This will permanently remove this product from your catalog.",
     "delete": "Delete",
@@ -113,13 +119,18 @@
     "deleteError": "Failed to delete product",
     "updateSuccess": "Product updated successfully",
     "updateError": "Failed to update product: {{message}}"
-
   },
   "dashboard": {
     "totalRevenue": "Total Revenue",
     "totalUsers": "Total Users",
     "totalOrders": "Total Orders",
+    "totalPendingOrders": "Total Pending Orders",
     "totalProducts": "Total Products",
+    "orderStatus": {
+      "pending": "Pending",
+      "delivered": "Delivered"
+    },
+    "productsByCategory":"Products by Category",
     "priceDistribution": "Price Distribution",
     "topProductsBySales": "Top products by sales",
     "recentOrders": "Recent orders",

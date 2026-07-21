@@ -14,13 +14,13 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const statusStyles = {
-  Delivered:
+  delivered:
     "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400",
-  Pending: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400",
+  pending: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400",
 };
 
 function formatDate(timestamp) {
-  return new Date(timestamp).toLocaleDateString("en-CA"); // YYYY-MM-DD
+  return new Date(timestamp * 1000).toLocaleDateString("en-CA"); // YYYY-MM-DD
 }
 
 export default function RecentOrdersTable() {
@@ -29,11 +29,13 @@ export default function RecentOrdersTable() {
   const navigate = useNavigate();
 
   if (isLoading)
-    return <p className="text-sm text-gray-500">Loading orders...</p>;
+    return (
+      <p className="text-sm text-gray-500">{t("dashboard.loadingOrders")}</p>
+    );
   if (isError)
-    return <p className="text-sm text-red-500">Failed to load orders</p>;
+    return <p className="text-sm text-red-500">{t("dashboard.ordersError")}</p>;
 
-  const recentOrders = [...orders]
+  const recentOrders = [...(orders ?? [])]
     .sort((a, b) => b.createdAt - a.createdAt)
     .slice(0, 4);
 

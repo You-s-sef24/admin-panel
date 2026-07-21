@@ -17,9 +17,17 @@ import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
 import z from "zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 export default function EditProductDialog({ show, product }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(
     product || {
@@ -27,6 +35,7 @@ export default function EditProductDialog({ show, product }) {
       desc: { en: "", ar: "" },
       price: "",
       dimensions: "",
+      category: {},
       image: null,
     },
   );
@@ -72,6 +81,7 @@ export default function EditProductDialog({ show, product }) {
         desc: formData.desc,
         price: formData.price,
         dimensions: formData.dimensions,
+        category: formData.category,
         image: formData.image,
       },
       {
@@ -82,6 +92,7 @@ export default function EditProductDialog({ show, product }) {
             desc: { en: "", ar: "" },
             price: "",
             dimensions: "",
+            category: { id: "frames", en: "Frames", ar: "إطارات" },
             image: null,
           });
         },
@@ -200,16 +211,55 @@ export default function EditProductDialog({ show, product }) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="image">{t("products.image")}</Label>
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                setFormData({ ...formData, image: e.target.files[0] });
-              }}
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="image">{t("products.image")}</Label>
+              <Input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setFormData({ ...formData, image: e.target.files[0] });
+                }}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="category">{t("products.category")}</Label>
+              <Select
+                value={
+                  lang === "en" ? formData.category.en : formData.category.en
+                }
+                onValueChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+              >
+                <SelectTrigger className="w-[200px] border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
+                  <SelectValue placeholder={t("collection.sortBy")} />
+                </SelectTrigger>
+                <SelectContent className="border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
+                  <SelectItem
+                    value={{ id: "frames", en: "Frames", ar: "إطارات" }}
+                  >
+                    Frames
+                  </SelectItem>
+                  <SelectItem
+                    value={{
+                      id: "decorations",
+                      en: "Decorations",
+                      ar: "ديكورات",
+                    }}
+                  >
+                    Decorations
+                  </SelectItem>
+                  <SelectItem
+                    value={{ id: "boards", en: "Boards", ar: "لوحات" }}
+                  >
+                    Boards
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <DialogFooter>

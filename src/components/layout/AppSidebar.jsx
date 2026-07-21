@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
+import Logo from "./Logo";
 
 export default function AppSidebar({ isOpen, onClose }) {
   const user = useAuthStore((s) => s.user);
@@ -43,9 +44,9 @@ export default function AppSidebar({ isOpen, onClose }) {
           ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"} md:translate-x-0`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-800">
-          <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">
-            Shopify Admin
-          </h1>
+          <div className="flex justify-center">
+            <Logo />
+          </div>
           <button
             onClick={onClose}
             className="md:hidden text-gray-500 dark:text-gray-400"
