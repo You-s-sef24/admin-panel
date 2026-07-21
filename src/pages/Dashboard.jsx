@@ -37,7 +37,7 @@ export default function Dashboard() {
     orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
 
   const totalPendingOrders =
-    orders?.filter((order) => order.status !== "Pending").length || 0;
+    orders?.filter((order) => order.status === "pending").length || 0;
 
   return (
     <div className="bg-gray-100 dark:bg-gray-950 min-h-screen">
