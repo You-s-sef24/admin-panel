@@ -25,6 +25,12 @@ import {
   SelectValue,
 } from "./ui/select";
 
+const CATEGORY_OPTIONS = [
+  { id: "frames", en: "Frames", ar: "إطارات" },
+  { id: "decorations", en: "Decorations", ar: "ديكورات" },
+  { id: "boards", en: "Boards", ar: "لوحات" },
+];
+
 export default function AddProductDialog({ show }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -40,7 +46,7 @@ export default function AddProductDialog({ show }) {
     },
     price: "",
     dimensions: "",
-    category: { id: "frames", en: "Frames", ar: "إطارات" },
+    category: CATEGORY_OPTIONS[0],
     image: null,
   });
   const { mutate: createProduct, isPending } = useAddProduct();
@@ -54,7 +60,11 @@ export default function AddProductDialog({ show }) {
     }),
     price: z.coerce.number().min(0, "Price must be a positive number"),
     dimensions: z.string().optional(),
-    category: z.object().required(),
+    category: z.object({
+      id: z.string().min(1, "Category is required"),
+      en: z.string().min(1),
+      ar: z.string().min(1),
+    }),
     image: z.instanceof(File, { message: "Please upload an image" }),
   });
 
@@ -90,7 +100,7 @@ export default function AddProductDialog({ show }) {
             },
             price: "",
             dimensions: "",
-            category: { id: "frames", en: "Frames", ar: "إطارات" },
+            category: CATEGORY_OPTIONS[0],
             image: null,
           });
         },
@@ -225,36 +235,32 @@ export default function AddProductDialog({ show }) {
             <div className="flex flex-col gap-2">
               <Label htmlFor="category">{t("products.category")}</Label>
               <Select
-                value={
-                  lang === "en" ? formData.category.en : formData.category.en
-                }
-                onValueChange={(e) =>
-                  setFormData({ ...formData, category: e.target.value })
-                }
+                value={formData.category.id}
+                onValueChange={(value) => {
+                  const selected = CATEGORY_OPTIONS.find((c) => c.id === value);
+                  if (selected) {
+                    setFormData({ ...formData, category: selected });
+                  }
+                }}
               >
                 <SelectTrigger className="w-[200px] border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
-                  <SelectValue placeholder={t("collection.sortBy")} />
+                  <SelectValue
+                    placeholder={t(
+                      "products.categoryPlaceholder",
+                      "Select category",
+                    )}
+                  >
+                    {lang === "en"
+                      ? formData.category.en
+                      : formData.category.ar}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-100">
-                  <SelectItem
-                    value={{ id: "frames", en: "Frames", ar: "إطارات" }}
-                  >
-                    Frames
-                  </SelectItem>
-                  <SelectItem
-                    value={{
-                      id: "decorations",
-                      en: "Decorations",
-                      ar: "ديكورات",
-                    }}
-                  >
-                    Decorations
-                  </SelectItem>
-                  <SelectItem
-                    value={{ id: "boards", en: "Boards", ar: "لوحات" }}
-                  >
-                    Boards
-                  </SelectItem>
+                  {CATEGORY_OPTIONS.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {lang === "en" ? cat.en : cat.ar}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
