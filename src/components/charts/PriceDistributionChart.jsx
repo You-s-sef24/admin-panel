@@ -9,11 +9,11 @@ import { getProducts } from "@/api/products";
 import { useTranslation } from "react-i18next";
 
 const RANGES = [
-  { label: "$0-50", min: 0, max: 50 },
-  { label: "$50-100", min: 50, max: 100 },
-  { label: "$100-200", min: 100, max: 200 },
-  { label: "$200-500", min: 200, max: 500 },
-  { label: "$500+", min: 500, max: Infinity },
+  { label: "0-50 L.E.", min: 0, max: 50 },
+  { label: "50-100 L.E.", min: 50, max: 100 },
+  { label: "100-200 L.E.", min: 100, max: 200 },
+  { label: "200-500 L.E.", min: 200, max: 500 },
+  { label: "500+ L.E.", min: 500, max: Infinity },
 ];
 
 function buildChartData(products) {

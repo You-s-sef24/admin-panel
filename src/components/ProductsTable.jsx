@@ -100,7 +100,7 @@ export function ProductsTable({ search = "" }) {
                       {displayCategory}
                     </TableCell>
                     <TableCell className="text-start">
-                      ${product.price}
+                      {product.price} L.E.
                     </TableCell>
                     <TableCell className="text-start">
                       {product.dimensions} {t("products.in")}

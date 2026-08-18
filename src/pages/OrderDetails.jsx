@@ -139,14 +139,14 @@ export default function OrderDetails() {
                   </p>
                 </div>
                 <p className="font-medium text-gray-900 dark:text-gray-100">
-                  ${item.price * item.quantity}
+                  {item.price * item.quantity} L.E.
                 </p>
               </div>
             ))}
           </div>
           <div className="flex justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 font-semibold text-gray-900 dark:text-gray-100">
             <p>{t("orderDetails.total")}</p>
-            <p>${total}</p>
+            <p>{total} L.E.</p>
           </div>
         </div>
       </div>

@@ -86,7 +86,7 @@ export function OrdersTable({ search = "", status = "" }) {
                   {calculateItems(order.items)}
                 </TableCell>
                 <TableCell className="text-start">
-                  ${calculateTotalPrice(order.items)}
+                  {calculateTotalPrice(order.items)} L.E.
                 </TableCell>
                 <TableCell className="text-start">
                   <Badge

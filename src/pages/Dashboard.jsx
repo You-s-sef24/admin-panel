@@ -29,8 +29,6 @@ export default function Dashboard() {
     queryFn: getOrders,
   });
 
-  console.log(orders);
-
   const totalUsers = users?.filter((u) => !u.isAdmin).length || 0;
 
   const totalRevenue =
@@ -45,7 +43,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
         <AnalyticsCard
           title={t("dashboard.totalRevenue")}
-          value={`$${totalRevenue.toLocaleString()}`}
+          value={`${totalRevenue.toLocaleString()} L.E.`}
           icon={<TrendingUp />}
         />
         <AnalyticsCard

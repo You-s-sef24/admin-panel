@@ -82,7 +82,7 @@ export default function RecentOrdersTable() {
                 </Badge>
               </TableCell>
               <TableCell className="text-end font-medium">
-                ${order.total}
+                {order.total} L.E.
               </TableCell>
               <TableCell className="text-end">
                 <Button
