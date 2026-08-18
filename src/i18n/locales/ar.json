@@ -68,7 +68,8 @@
     "Delivered": "تم التوصيل",
     "Pending": "قيد الانتظار",
     "notFound": "الطلب غير موجود",
-    "loading": "جار التحميل..."
+    "loading": "جار التحميل...",
+    "nails": "المسامير"
   },
   "products": {
     "searchPlaceholder": "بحث عن المنتجات...",
@@ -118,7 +119,9 @@
     "deleteSuccess": "تم حذف المنتج",
     "deleteError": "فشل حذف المنتج",
     "updateSuccess": "تم تحديث المنتج بنجاح",
-    "updateError": "فشل تحديث المنتج. يرجى المحاولة مرة أخرى."
+    "updateError": "فشل تحديث المنتج. يرجى المحاولة مرة أخرى.",
+    "maxImagesError": "يمكنك رفع 3 صور كحد أقصى",
+    "featured": "منتج مميز"
   },
   "dashboard": {
     "totalRevenue": "إجمالي الإيرادات",

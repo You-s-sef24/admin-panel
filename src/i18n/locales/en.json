@@ -68,7 +68,8 @@
     "delivered": "Delivered",
     "pending": "Pending",
     "notFound": "Order not found",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "nails": "Nails"
   },
   "products": {
     "searchPlaceholder": "Search products...",
@@ -118,7 +119,9 @@
     "deleteSuccess": "Product deleted",
     "deleteError": "Failed to delete product",
     "updateSuccess": "Product updated successfully",
-    "updateError": "Failed to update product: {{message}}"
+    "updateError": "Failed to update product: {{message}}",
+    "maxImagesError": "You can upload up to 3 images",
+    "featured": "Featured product"
   },
   "dashboard": {
     "totalRevenue": "Total Revenue",
@@ -130,7 +133,7 @@
       "pending": "Pending",
       "delivered": "Delivered"
     },
-    "productsByCategory":"Products by Category",
+    "productsByCategory": "Products by Category",
     "priceDistribution": "Price Distribution",
     "topProductsBySales": "Top products by sales",
     "recentOrders": "Recent orders",

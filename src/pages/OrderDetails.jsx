@@ -15,6 +15,8 @@ import Header from "@/components/layout/Header";
 import { formatDate } from "@/lib/formatDate";
 import { useLanguageStore } from "@/store/langStore";
 
+const NAIL_PRICE = 15;
+
 export default function OrderDetails() {
   const language = useLanguageStore((s) => s.language);
   const { t } = useTranslation();
@@ -22,6 +24,7 @@ export default function OrderDetails() {
   const navigate = useNavigate();
   const { data: order, isLoading, isError } = useGetOrder(id);
   const { mutate: updateOrder, isPending } = useUpdateOrder();
+  console.log(order);
 
   if (isLoading)
     return (
@@ -32,10 +35,13 @@ export default function OrderDetails() {
       <p className="p-4 text-sm text-red-500">{t("orderDetails.notFound")}</p>
     );
 
-  const total = (order.items || []).reduce(
+  const itemsTotal = (order.items || []).reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+  const nailsCount = order.nails || 0;
+  const nailsTotal = nailsCount * NAIL_PRICE;
+  const total = itemsTotal + nailsTotal;
 
   function handleStatusChange(newStatus) {
     updateOrder({ id: order.id, ...order, status: newStatus });
@@ -110,6 +116,16 @@ export default function OrderDetails() {
               </SelectContent>
             </Select>
           </div>
+          {nailsCount > 0 && (
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t("orderDetails.nails")}
+              </p>
+              <p className="font-medium text-gray-900 dark:text-gray-100">
+                {nailsCount} ({nailsTotal} L.E.)
+              </p>
+            </div>
+          )}
           <div className="sm:col-span-2">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {t("orderDetails.shippingAddress")}
@@ -125,24 +141,54 @@ export default function OrderDetails() {
             {t("orderDetails.items")}
           </h3>
           <div className="flex flex-col gap-3">
-            {(order.items || []).map((item, idx) => (
-              <div
-                key={idx}
-                className="flex justify-between border-b border-gray-200 dark:border-gray-800 pb-2 last:border-b-0"
-              >
+            {(order.items || []).map((item, idx) => {
+              const thumbnail = item.image || item.images?.[0];
+
+              return (
+                <div
+                  key={idx}
+                  className="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-2 last:border-b-0"
+                >
+                  <div className="flex items-center gap-3">
+                    {thumbnail ? (
+                      <img
+                        src={thumbnail}
+                        alt={getItemName(item)}
+                        className="object-cover rounded-md size-12"
+                      />
+                    ) : (
+                      <div className="size-12 rounded-md bg-gray-100 dark:bg-zinc-800" />
+                    )}
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-gray-100">
+                        {getItemName(item)}
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {t("orderDetails.qty")}: {item.quantity}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="font-medium text-gray-900 dark:text-gray-100">
+                    {item.price * item.quantity} L.E.
+                  </p>
+                </div>
+              );
+            })}
+            {nailsCount > 0 && (
+              <div className="flex justify-between border-b border-gray-200 dark:border-gray-800 pb-2 last:border-b-0">
                 <div>
                   <p className="font-medium text-gray-900 dark:text-gray-100">
-                    {getItemName(item)}
+                    {t("orderDetails.nails")}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {t("orderDetails.qty")}: {item.quantity}
+                    {t("orderDetails.qty")}: {nailsCount}
                   </p>
                 </div>
                 <p className="font-medium text-gray-900 dark:text-gray-100">
-                  {item.price * item.quantity} L.E.
+                  {nailsTotal} L.E.
                 </p>
               </div>
-            ))}
+            )}
           </div>
           <div className="flex justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 font-semibold text-gray-900 dark:text-gray-100">
             <p>{t("orderDetails.total")}</p>
