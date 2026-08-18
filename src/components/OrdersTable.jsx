@@ -13,6 +13,7 @@ import {
 import { useGetOrders } from "@/hooks/orders/useGetOrders";
 import { Badge } from "./ui/badge";
 import { formatDate } from "@/lib/formatDate";
+import { calculateOrderTotal } from "@/lib/orderTotals";
 
 const statusStyles = {
   delivered:
@@ -37,13 +38,6 @@ export function OrdersTable({ search = "", status = "" }) {
     const matchesStatus = !status || order.status === status;
     return matchesSearch && matchesStatus;
   });
-
-  function calculateTotalPrice(items) {
-    return (items || []).reduce(
-      (sum, item) => sum + Number(item.price) * item.quantity,
-      0,
-    );
-  }
 
   function calculateItems(items) {
     return (items || []).reduce((sum, item) => sum + item.quantity, 0);
@@ -86,7 +80,7 @@ export function OrdersTable({ search = "", status = "" }) {
                   {calculateItems(order.items)}
                 </TableCell>
                 <TableCell className="text-start">
-                  {calculateTotalPrice(order.items)} L.E.
+                  {calculateOrderTotal(order)} L.E.
                 </TableCell>
                 <TableCell className="text-start">
                   <Badge

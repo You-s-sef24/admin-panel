@@ -78,7 +78,7 @@ export default function ProductsByCategoryChart() {
         <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
           {t("dashboard.productsByCategory")}
         </h3>
-        <p className="text-sm text-gray-500">{t("dashboard.noProducts")}</p>
+        <p className="text-sm text-gray-500">{t("products.noResults")}</p>
       </div>
     );
 

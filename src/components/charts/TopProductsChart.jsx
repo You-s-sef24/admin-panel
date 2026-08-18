@@ -62,7 +62,7 @@ export default function TopProductsChart() {
         <h3 className="font-semibold text-lg mb-4 text-gray-900 dark:text-gray-100">
           {t("dashboard.topProductsBySales")}
         </h3>
-        <p className="text-sm text-gray-500">{t("dashboard.noOrders")}</p>
+        <p className="text-sm text-gray-500">{t("orders.noResults")}</p>
       </div>
     );
 

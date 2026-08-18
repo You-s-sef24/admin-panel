@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { EyeIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { calculateOrderTotal } from "@/lib/orderTotals";
 
 const statusStyles = {
   delivered:
@@ -62,41 +63,47 @@ export default function RecentOrdersTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {recentOrders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell className="font-medium text-indigo-600 dark:text-indigo-400 text-start">
-                ORD-{order.id}
-              </TableCell>
-              <TableCell className="text-start">{order.customerName}</TableCell>
-              <TableCell className="text-gray-500 dark:text-gray-400 text-start">
-                {formatDate(order.createdAt)}
-              </TableCell>
-              <TableCell className="text-start">
-                <Badge
-                  className={
-                    statusStyles[order.status] ||
-                    "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                  }
-                >
-                  {t(`orders.${order.status}`)}
-                </Badge>
-              </TableCell>
-              <TableCell className="text-end font-medium">
-                {order.total} L.E.
-              </TableCell>
-              <TableCell className="text-end">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-8"
-                  onClick={() => navigate(`/orders/${order.id}`)}
-                >
-                  <EyeIcon className="size-4" />
-                  <span className="sr-only">{t("dashboard.view")}</span>
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {orders.length !== 0 ? (
+            recentOrders.map((order) => (
+              <TableRow key={order.id}>
+                <TableCell className="font-medium text-indigo-600 dark:text-indigo-400 text-start">
+                  ORD-{order.id}
+                </TableCell>
+                <TableCell className="text-start">
+                  {order.customerName}
+                </TableCell>
+                <TableCell className="text-gray-500 dark:text-gray-400 text-start">
+                  {formatDate(order.createdAt)}
+                </TableCell>
+                <TableCell className="text-start">
+                  <Badge
+                    className={
+                      statusStyles[order.status] ||
+                      "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                    }
+                  >
+                    {t(`orders.${order.status}`)}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-end font-medium">
+                  {calculateOrderTotal(order)} L.E.
+                </TableCell>
+                <TableCell className="text-end">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-8"
+                    onClick={() => navigate(`/orders/${order.id}`)}
+                  >
+                    <EyeIcon className="size-4" />
+                    <span className="sr-only">{t("dashboard.view")}</span>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <p className="text-center text-foreground py-2">{t("orders.noResults")}</p>
+          )}
         </TableBody>
       </Table>
     </div>

@@ -14,8 +14,7 @@ import { useUpdateOrder } from "@/hooks/orders/useUpdateOrder";
 import Header from "@/components/layout/Header";
 import { formatDate } from "@/lib/formatDate";
 import { useLanguageStore } from "@/store/langStore";
-
-const NAIL_PRICE = 15;
+import { calculateOrderTotal, NAIL_PRICE } from "@/lib/orderTotals";
 
 export default function OrderDetails() {
   const language = useLanguageStore((s) => s.language);
@@ -24,7 +23,6 @@ export default function OrderDetails() {
   const navigate = useNavigate();
   const { data: order, isLoading, isError } = useGetOrder(id);
   const { mutate: updateOrder, isPending } = useUpdateOrder();
-  console.log(order);
 
   if (isLoading)
     return (
@@ -35,13 +33,9 @@ export default function OrderDetails() {
       <p className="p-4 text-sm text-red-500">{t("orderDetails.notFound")}</p>
     );
 
-  const itemsTotal = (order.items || []).reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
   const nailsCount = order.nails || 0;
   const nailsTotal = nailsCount * NAIL_PRICE;
-  const total = itemsTotal + nailsTotal;
+  const total = calculateOrderTotal(order);
 
   function handleStatusChange(newStatus) {
     updateOrder({ id: order.id, ...order, status: newStatus });
