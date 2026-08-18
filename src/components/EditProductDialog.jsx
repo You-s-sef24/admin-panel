@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "./ui/checkbox";
 import {
   Dialog,
   DialogClose,
@@ -24,12 +25,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { X } from "lucide-react";
 
 const CATEGORY_OPTIONS = [
-  { id: "frames", en: "Frames", ar: "إطارات" },
-  { id: "decorations", en: "Decorations", ar: "ديكورات" },
-  { id: "boards", en: "Boards", ar: "لوحات" },
+  { id: "accessories", en: "3D Accessories", ar: "إكسسوارات ثلاثية الأبعاد" },
+  {
+    id: "acrylic",
+    en: "Acrylic Signs & Designs",
+    ar: "لافتات وتصاميم من الأكريليك",
+  }
 ];
+
+const MAX_IMAGES = 3;
 
 export default function EditProductDialog({ show, product }) {
   const { t, i18n } = useTranslation();
@@ -42,14 +49,15 @@ export default function EditProductDialog({ show, product }) {
       price: "",
       dimensions: "",
       category: CATEGORY_OPTIONS[0],
-      image: null,
+      images: [],
+      featured: false,
     },
   );
   const { mutate: updateProduct, isPending } = useUpdateProduct();
 
   useEffect(() => {
     if (product) {
-      setFormData(product);
+      setFormData({ ...product, images: product.images || [] });
     }
   }, [product, open]);
 
@@ -69,8 +77,33 @@ export default function EditProductDialog({ show, product }) {
       en: z.string().min(1),
       ar: z.string().min(1),
     }),
-    image: z.union([z.string(), z.instanceof(File)]).optional(),
+    images: z
+      .array(z.union([z.string(), z.instanceof(File)]))
+      .min(1, "Please upload at least one image")
+      .max(MAX_IMAGES, `You can upload up to ${MAX_IMAGES} images`),
+    featured: z.boolean().optional(),
   });
+
+  function handleImageChange(e) {
+    const selected = Array.from(e.target.files);
+    if (!selected.length) return;
+
+    const remainingSlots = MAX_IMAGES - formData.images.length;
+    if (selected.length > remainingSlots) {
+      toast.error(t("products.maxImagesError", `You can upload up to ${MAX_IMAGES} images`));
+    }
+
+    const accepted = selected.slice(0, remainingSlots);
+    setFormData((prev) => ({ ...prev, images: [...prev.images, ...accepted] }));
+    e.target.value = "";
+  }
+
+  function removeImage(index) {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -93,7 +126,8 @@ export default function EditProductDialog({ show, product }) {
         price: formData.price,
         dimensions: formData.dimensions,
         category: formData.category,
-        image: formData.image,
+        images: formData.images,
+        featured: formData.featured,
       },
       {
         onSuccess: () => {
@@ -216,15 +250,44 @@ export default function EditProductDialog({ show, product }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="image">{t("products.image")}</Label>
+              <Label htmlFor="images">
+                {t("products.image")} ({formData.images.length}/{MAX_IMAGES})
+              </Label>
               <Input
-                id="image"
+                id="images"
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  setFormData({ ...formData, image: e.target.files[0] });
-                }}
+                multiple
+                disabled={formData.images.length >= MAX_IMAGES}
+                onChange={handleImageChange}
               />
+              {formData.images.length > 0 && (
+                <div className="flex gap-2 flex-wrap mt-1">
+                  {formData.images.map((img, index) => (
+                    <div
+                      key={index}
+                      className="relative w-16 h-16 rounded overflow-hidden border border-gray-200 dark:border-zinc-800"
+                    >
+                      <img
+                        src={
+                          typeof img === "string"
+                            ? img
+                            : URL.createObjectURL(img)
+                        }
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-0.5 right-0.5 bg-black/60 text-white rounded-full p-0.5 cursor-pointer"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -260,6 +323,19 @@ export default function EditProductDialog({ show, product }) {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="featured"
+              checked={formData.featured}
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, featured: checked === true })
+              }
+            />
+            <Label htmlFor="featured" className="cursor-pointer">
+              {t("products.featured", "Featured product")}
+            </Label>
           </div>
 
           <DialogFooter>

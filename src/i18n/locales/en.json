@@ -92,7 +92,7 @@
     "addProductDescription": "Fill in the details to add new artwork to your catalog.",
     "name": "Name",
     "arabicName": "Arabic Name",
-    "priceLabel": "Price ($)",
+    "priceLabel": "Price (L.E.)",
     "dimensionsLabel": "Dimensions",
     "frameTypeLabel": "Frame Type",
     "selectFrameType": "Select frame type",

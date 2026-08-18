@@ -14,28 +14,36 @@ export async function deleteProduct(id) {
 }
 
 export async function createProduct(product) {
-    const formData = new FormData();
-    formData.append("file", product.image);
-    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    const uploadPromises = product.images.map(async (image) => {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+        const uploadRes = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+        return uploadRes.data.secure_url;
+    });
 
-    const uploadRes = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
-    const imageUrl = uploadRes.data.secure_url;
+    const imageUrls = await Promise.all(uploadPromises);
 
     const res = await axios.post(`${BASE_URL}/products`, {
         ...product,
-        image: imageUrl,
+        images: imageUrls,
     });
     return res.data;
 }
 
 export async function updateProduct({ id, ...product }) {
-    if (product.image instanceof File) {
-        const formData = new FormData();
-        formData.append("file", product.image);
-        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-        const uploadRes = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
-        product.image = uploadRes.data.secure_url;
+    if (Array.isArray(product.images)) {
+        const uploadPromises = product.images.map(async (image) => {
+            if (image instanceof File) {
+                const formData = new FormData();
+                formData.append("file", image);
+                formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+                const uploadRes = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+                return uploadRes.data.secure_url;
+            }
+            return image;
+        });
+        product.images = await Promise.all(uploadPromises);
     }
 
     const res = await axios.put(`${BASE_URL}/products/${id}`, product);

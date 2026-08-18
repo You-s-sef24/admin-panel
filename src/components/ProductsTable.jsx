@@ -83,15 +83,20 @@ export function ProductsTable({ search = "" }) {
                   language === "en"
                     ? product.category.en
                     : product.category.ar || product.name.en;
+                const thumbnail = product.images?.[0];
 
                 return (
                   <TableRow key={product.id}>
                     <TableCell className="text-start">
-                      <img
-                        src={product.image}
-                        alt={displayName}
-                        className="object-cover rounded-md size-16"
-                      />
+                      {thumbnail ? (
+                        <img
+                          src={thumbnail}
+                          alt={displayName}
+                          className="object-cover rounded-md size-16"
+                        />
+                      ) : (
+                        <div className="size-16 rounded-md bg-gray-100 dark:bg-zinc-800" />
+                      )}
                     </TableCell>
                     <TableCell className="font-medium text-start">
                       {displayName}

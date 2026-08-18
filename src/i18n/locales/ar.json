@@ -92,7 +92,7 @@
     "addProductDescription": "أدخل التفاصيل لإضافة عمل فني جديد إلى الكتالوج.",
     "name": "الاسم",
     "arabicName": "الاسم بالعربية",
-    "priceLabel": "السعر ($)",
+    "priceLabel": "السعر (ج.م)",
     "dimensionsLabel": "الأبعاد",
     "frameTypeLabel": "نوع الإطار",
     "selectFrameType": "اختر نوع الإطار",
