@@ -69,7 +69,9 @@
     "Pending": "قيد الانتظار",
     "notFound": "الطلب غير موجود",
     "loading": "جار التحميل...",
-    "nails": "المسامير"
+    "nails": "المسامير",
+    "shipping": "الشحن",
+    "freeShipping": "مجاني"
   },
   "products": {
     "searchPlaceholder": "بحث عن المنتجات...",

@@ -69,7 +69,9 @@
     "pending": "Pending",
     "notFound": "Order not found",
     "loading": "Loading...",
-    "nails": "Nails"
+    "nails": "Nails",
+    "shipping": "Shipping",
+    "freeShipping": "Free"
   },
   "products": {
     "searchPlaceholder": "Search products...",

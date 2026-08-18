@@ -6,5 +6,6 @@ export function calculateOrderTotal(order) {
         0,
     );
     const nailsTotal = (order.nails || 0) * NAIL_PRICE;
-    return itemsTotal + nailsTotal;
+    const shipping = Number(order.shipping) || 0;
+    return itemsTotal + nailsTotal + shipping;
 }

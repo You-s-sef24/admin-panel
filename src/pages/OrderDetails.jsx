@@ -35,6 +35,7 @@ export default function OrderDetails() {
 
   const nailsCount = order.nails || 0;
   const nailsTotal = nailsCount * NAIL_PRICE;
+  const shippingFee = Number(order.shipping) || 0;
   const total = calculateOrderTotal(order);
 
   function handleStatusChange(newStatus) {
@@ -120,6 +121,16 @@ export default function OrderDetails() {
               </p>
             </div>
           )}
+          <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {t("orderDetails.shipping")}
+            </p>
+            <p className="font-medium text-gray-900 dark:text-gray-100">
+              {shippingFee === 0
+                ? t("orderDetails.freeShipping")
+                : `${shippingFee} L.E.`}
+            </p>
+          </div>
           <div className="sm:col-span-2">
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {t("orderDetails.shippingAddress")}
@@ -183,6 +194,16 @@ export default function OrderDetails() {
                 </p>
               </div>
             )}
+            <div className="flex justify-between border-b border-gray-200 dark:border-gray-800 pb-2 last:border-b-0">
+              <p className="font-medium text-gray-900 dark:text-gray-100">
+                {t("orderDetails.shipping")}
+              </p>
+              <p className="font-medium text-gray-900 dark:text-gray-100">
+                {shippingFee === 0
+                  ? t("orderDetails.freeShipping")
+                  : `${shippingFee} L.E.`}
+              </p>
+            </div>
           </div>
           <div className="flex justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 font-semibold text-gray-900 dark:text-gray-100">
             <p>{t("orderDetails.total")}</p>
