@@ -1,3 +1,5 @@
+"use client";
+
 import { useAddProduct } from "@/hooks/products/useAddProduct";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +36,13 @@ const CATEGORY_OPTIONS = [
     en: "Acrylic Signs & Designs",
     ar: "لافتات وتصاميم من الأكريليك",
   },
+  {
+    id: "pegboard",
+    en: "Pegboards & Accessories",
+    ar: "لوحات تعليق ومستلزماتها",
+  },
+  { id: "frames", en: "Frames & Displays", ar: "إطارات ومعروضات" },
+  { id: "decorations", en: "Decorations", ar: "ديكورات وتزيين" },
 ];
 
 const MAX_IMAGES = 3;

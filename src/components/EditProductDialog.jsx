@@ -33,7 +33,14 @@ const CATEGORY_OPTIONS = [
     id: "acrylic",
     en: "Acrylic Signs & Designs",
     ar: "لافتات وتصاميم من الأكريليك",
-  }
+  },
+  {
+    id: "pegboard",
+    en: "Pegboards & Accessories",
+    ar: "لوحات تعليق ومستلزماتها",
+  },
+  { id: "frames", en: "Frames & Displays", ar: "إطارات ومعروضات" },
+  { id: "decorations", en: "Decorations", ar: "ديكورات وتزيين" },
 ];
 
 const MAX_IMAGES = 3;
@@ -90,7 +97,12 @@ export default function EditProductDialog({ show, product }) {
 
     const remainingSlots = MAX_IMAGES - formData.images.length;
     if (selected.length > remainingSlots) {
-      toast.error(t("products.maxImagesError", `You can upload up to ${MAX_IMAGES} images`));
+      toast.error(
+        t(
+          "products.maxImagesError",
+          `You can upload up to ${MAX_IMAGES} images`,
+        ),
+      );
     }
 
     const accepted = selected.slice(0, remainingSlots);

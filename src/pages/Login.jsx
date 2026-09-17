@@ -17,6 +17,9 @@ async function loginRequest({ email, password }) {
     params: { email },
   });
 
+  console.log(res);
+  
+
   const matchedUser = res.data.find(
     (u) => u.email === email && u.password === password,
   );
